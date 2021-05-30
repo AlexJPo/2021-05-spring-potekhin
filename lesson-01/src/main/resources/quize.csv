@@ -1,0 +1,6 @@
+Question,Variant answers,Correct answer
+Sum two digits and write result: 5 + 10?;6,5,4,15;15
+What will be result: 2 / 0.5?;1,2,4;4
+Java is program language?(y/n);y,n;y
+Is html - hyper text markup language?(y/n);y,n;y
+How much question was?;2,3,4,5;4

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns="http://www.springframework.org/schema/beans"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+  <bean id="csvReader" class="ru.otus.homework.service.csv.reader.CsvReaderServiceImpl">
+    <property name="csvFileLocation" value="classpath:/quize.csv"/>
+  </bean>
+
+  <bean id="quizeParser" class="ru.otus.homework.service.csv.parser.QuizeParserServiceImpl">
+  </bean>
+
+  <bean id="interview" class="ru.otus.homework.service.csv.interview.InterviewServiceImpl">
+  </bean>
+
+</beans>
