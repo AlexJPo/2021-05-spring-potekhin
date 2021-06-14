@@ -3,6 +3,7 @@ package ru.otus.lesson04.service.interview;
 import org.springframework.stereotype.Service;
 import ru.otus.lesson04.model.Question;
 import ru.otus.lesson04.model.Quize;
+import ru.otus.lesson04.service.localize.LocalizeService;
 import ru.otus.lesson04.service.parser.QuizeParserService;
 import ru.otus.lesson04.service.reader.CsvReaderService;
 import ru.otus.lesson04.service.validator.QuizeValidator;
@@ -25,13 +26,16 @@ public class InterviewServiceImpl implements InterviewService {
   private final QuizeParserService quizeParserService;
   private final CsvReaderService readerService;
   private final QuizeValidator quizeValidator;
+  private final LocalizeService localizeService;
 
   public InterviewServiceImpl(QuizeParserService quizeParserService,
                               CsvReaderService readerService,
-                              QuizeValidator quizeValidator) {
+                              QuizeValidator quizeValidator,
+                              LocalizeService localizeService) {
     this.quizeParserService = quizeParserService;
     this.readerService = readerService;
     this.quizeValidator = quizeValidator;
+    this.localizeService = localizeService;
   }
 
   /**
@@ -39,13 +43,13 @@ public class InterviewServiceImpl implements InterviewService {
    */
   @Override
   public void start() {
-    System.out.println("\nPrepare interview questions");
+    System.out.println(localizeService.translate("interview.start"));
     List<String> data = readerService.read();
     Quize quize = quizeParserService.parse(data);
-    System.out.println("Prepare complete");
+    System.out.println(localizeService.translate("interview.complete"));
 
     int questionCounter = 1;
-    System.out.println("\nStart interview");
+    System.out.println(localizeService.translate("quize.start"));
 
     final Map<Question, Integer> studentAnswers = new HashMap<>();
     final Scanner scanner = new Scanner(System.in);
@@ -54,15 +58,19 @@ public class InterviewServiceImpl implements InterviewService {
 
       String userInput = scanner.next();
       if (stringIsNumber(userInput)) {
-        System.out.println("Your answer is " + userInput);
+        System.out.println(
+            localizeService.translate("quize.your.answer", new String[] { userInput })
+        );
       } else {
         while (true) {
-          System.out.println("You enter incorrect answer. Retry again");
+          System.out.println(localizeService.translate("quize.incorrect.answer"));
           printQuestionVariants(question, questionCounter);
 
           userInput = scanner.next();
           if (stringIsNumber(userInput)) {
-            System.out.println("Your answer is " + userInput + "\n");
+            System.out.println(
+                localizeService.translate("quize.your.answer", new String[] { userInput })
+            );
             break;
           }
         }
@@ -98,7 +106,7 @@ public class InterviewServiceImpl implements InterviewService {
    */
   private boolean stringIsNumber(String userInput) {
     try {
-      int number = Integer.parseInt(userInput);
+      Integer.parseInt(userInput);
       return true;
     } catch (NumberFormatException ex) {
       return false;
