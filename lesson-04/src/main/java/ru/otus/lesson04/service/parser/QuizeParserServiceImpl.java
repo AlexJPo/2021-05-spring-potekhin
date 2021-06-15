@@ -67,7 +67,12 @@ public class QuizeParserServiceImpl implements QuizeParserService {
 
     final String question = questionTempData[0];
     final List<String> variantAnswers = Arrays.asList(questionTempData[1].split(answerVariantSeparator));
-    final Integer correctAnswer = Integer.valueOf(questionTempData[2]);
-    return new Question(question, variantAnswers, correctAnswer);
+
+    try {
+      final Integer correctAnswer = Integer.valueOf(questionTempData[2]);
+      return new Question(question, variantAnswers, correctAnswer);
+    } catch (NumberFormatException ex) {
+      return new Question("", new ArrayList<>(), 0);
+    }
   }
 }

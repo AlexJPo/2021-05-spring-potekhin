@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import java.util.Locale;
 
 /**
- * @author ajp
+ * @author Aleksey.Potekhin
  * @date 14.06.2021
  */
 @Service
@@ -15,25 +15,29 @@ public class LocalizeServiceImpl implements LocalizeService {
   private final MessageSource messageSource;
   private final String applicationLocale;
 
-  public LocalizeServiceImpl(MessageSource msg,
-                             @Value("${localization}") String locale) {
-    this.messageSource = msg;
+  public LocalizeServiceImpl(@Value("${localization}") String locale,
+                             MessageSource msg) {
     this.applicationLocale = locale;
+    this.messageSource = msg;
   }
 
   /**
    * {@inheritDoc}
    */
   @Override
-  public String translate(String propName) {
-    return messageSource.getMessage(propName, new Object[] {}, Locale.forLanguageTag(applicationLocale));
+  public void translate(String propName) {
+    System.out.println(
+        messageSource.getMessage(propName, new Object[] {}, Locale.forLanguageTag(applicationLocale))
+    );
   }
 
   /**
    * {@inheritDoc}
    */
   @Override
-  public String translate(String propName, Object[] values) {
-    return messageSource.getMessage(propName, values, Locale.forLanguageTag(applicationLocale));
+  public void translate(String propName, Object[] values) {
+    System.out.println(
+        messageSource.getMessage(propName, values, Locale.forLanguageTag(applicationLocale))
+    );
   }
 }

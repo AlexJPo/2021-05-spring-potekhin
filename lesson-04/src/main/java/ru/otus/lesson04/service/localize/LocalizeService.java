@@ -1,7 +1,7 @@
 package ru.otus.lesson04.service.localize;
 
 /**
- * @author ajp
+ * @author Aleksey.Potekhin
  * @date 14.06.2021
  */
 public interface LocalizeService {
@@ -11,7 +11,7 @@ public interface LocalizeService {
    * @param propName названеи свойства из файла messages.properties
    * @return переведённая строка
    */
-  String translate(String propName);
+  void translate(String propName);
 
   /**
    * Перевод текста приложения
@@ -20,6 +20,6 @@ public interface LocalizeService {
    * @param values значения
    * @return переведённая строка
    */
-  String translate(String propName, Object[] values);
+  void translate(String propName, Object[] values);
 
 }

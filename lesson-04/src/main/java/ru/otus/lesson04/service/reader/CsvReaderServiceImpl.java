@@ -21,7 +21,7 @@ public class CsvReaderServiceImpl implements CsvReaderService {
   private final Resource resource;
   private final LocalizeService localizeService;
 
-  public CsvReaderServiceImpl(@Value("classpath:quize.csv") Resource resource,
+  public CsvReaderServiceImpl(@Value("#{ '${localization}' == '' ? 'classpath:quize.csv' : 'classpath:quize'.concat('_${localization}.csv')}") Resource resource,
                               LocalizeService localizeService) {
     this.resource = resource;
     this.localizeService = localizeService;
@@ -34,9 +34,7 @@ public class CsvReaderServiceImpl implements CsvReaderService {
   public List<String> read() {
     final List<String> result = new ArrayList<>();
     try {
-      System.out.println(
-          localizeService.translate("csv.reader.read.file", new String[] { resource.getFilename() })
-      );
+      localizeService.translate("csv.reader.read.file", new String[] { resource.getFilename() });
 
       final InputStream csvInputStream = resource.getInputStream();
       try (BufferedReader br = new BufferedReader(new InputStreamReader(csvInputStream))) {
@@ -46,13 +44,9 @@ public class CsvReaderServiceImpl implements CsvReaderService {
         }
       }
 
-      System.out.println(
-          localizeService.translate("csv.reader.read.complete")
-      );
+      localizeService.translate("csv.reader.read.complete");
     } catch (IOException e) {
-      System.out.println(
-          localizeService.translate("csv.reader.read.error", new String[] { e.getMessage() })
-      );
+      localizeService.translate("csv.reader.read.error", new String[] { e.getMessage() });
     }
     return result;
   }
