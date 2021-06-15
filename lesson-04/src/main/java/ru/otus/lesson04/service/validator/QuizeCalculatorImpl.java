@@ -1,6 +1,7 @@
 package ru.otus.lesson04.service.validator;
 
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 import ru.otus.lesson04.model.Question;
 import ru.otus.lesson04.model.QuizeResult;
 
@@ -18,6 +19,10 @@ public class QuizeCalculatorImpl implements QuizeCalculator {
    */
   @Override
   public QuizeResult calculatePoints(final Map<Question, Integer> studentAnswers) {
+    if (CollectionUtils.isEmpty(studentAnswers)) {
+      return new QuizeResult(0,0);
+    }
+
     long correctAnswers = studentAnswers
         .entrySet()
         .stream()
