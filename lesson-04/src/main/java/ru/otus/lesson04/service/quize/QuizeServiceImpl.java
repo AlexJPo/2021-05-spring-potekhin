@@ -1,6 +1,7 @@
 package ru.otus.lesson04.service.quize;
 
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 import ru.otus.lesson04.model.Question;
 import ru.otus.lesson04.service.localize.LocalizeService;
 import ru.otus.lesson04.service.reader.InputReader;
@@ -9,15 +10,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static ru.otus.lesson04.utils.QuizeHelper.prepareVariantString;
+import static ru.otus.lesson04.utils.QuizeHelper.stringIsNumber;
+
 /**
  * @author Aleksey.Potekhin
  * @date 15.06.2021
  */
 @Service
 public class QuizeServiceImpl implements QuizeService {
-  private static final String NEXT_POSITION = "   %s) %s,";
-  private static final String LAST_POSITION = "   %s) %s\n";
-
   private final LocalizeService localizeService;
   private final InputReader inputReader;
 
@@ -27,8 +28,15 @@ public class QuizeServiceImpl implements QuizeService {
     this.inputReader = inputReader;
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public Map<Question, Integer> start(final List<Question> questions) {
+    if (CollectionUtils.isEmpty(questions)) {
+      return new HashMap<>();
+    }
+
     int questionCounter = 1;
     localizeService.translate("quize.start");
 
@@ -38,8 +46,7 @@ public class QuizeServiceImpl implements QuizeService {
 
       String userInput = inputReader.getInput();
       if (stringIsNumber(userInput)) {
-        studentAnswers.put(question, Integer.valueOf(userInput));
-        localizeService.translate("quize.your.answer", new String[] { userInput });
+        saveUserAnswer(studentAnswers, question, userInput);
       } else {
         while (true) {
           localizeService.translate("quize.incorrect.answer");
@@ -47,7 +54,7 @@ public class QuizeServiceImpl implements QuizeService {
 
           userInput = inputReader.getInput();
           if (stringIsNumber(userInput)) {
-            localizeService.translate("quize.your.answer", new String[] { userInput });
+            saveUserAnswer(studentAnswers, question, userInput);
             break;
           }
         }
@@ -58,6 +65,18 @@ public class QuizeServiceImpl implements QuizeService {
     }
 
     return studentAnswers;
+  }
+
+  /**
+   * Сохранение ответа стиудента
+   *
+   * @param studentAnswers ответы студента на вопрос
+   * @param question вопрос
+   * @param val ответ студента
+   */
+  private void saveUserAnswer(final Map<Question, Integer> studentAnswers, final Question question, final String val) {
+    studentAnswers.put(question, Integer.valueOf(val));
+    localizeService.translate("quize.your.answer", new String[] { val });
   }
 
   /**
@@ -74,33 +93,4 @@ public class QuizeServiceImpl implements QuizeService {
     }
   }
 
-  /**
-   * Проверяем, что ответ, который ввёл пользователья является числом, а не строкой
-   *
-   * @param userInput ответ пользователя
-   * @return true, если число, иначе false
-   */
-  private boolean stringIsNumber(String userInput) {
-    try {
-      Integer.parseInt(userInput);
-      return true;
-    } catch (NumberFormatException ex) {
-      return false;
-    }
-  }
-
-  /**
-   * Формирование строка с вариантов ответа
-   *
-   * @param counter счётчик
-   * @param collectionSize размер коллекции
-   * @param val вариант ответа
-   * @return форматированная строка
-   */
-  private String prepareVariantString(final int counter, final int collectionSize, final String val) {
-    final String pattern = counter < collectionSize - 1
-        ? NEXT_POSITION
-        : LAST_POSITION;
-    return String.format(pattern, (counter + 1), val);
-  }
 }

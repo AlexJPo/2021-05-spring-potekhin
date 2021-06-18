@@ -6,12 +6,12 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * @author ajp
+ * @author Aleksey.Potekhin
  * @date 15.06.2021
  */
 public interface QuizeService {
   /**
-   * Проверение опроса для студента
+   * Проведение опроса для студента
    *
    * @param questions вопросы
    * @return ответы на вопросы
