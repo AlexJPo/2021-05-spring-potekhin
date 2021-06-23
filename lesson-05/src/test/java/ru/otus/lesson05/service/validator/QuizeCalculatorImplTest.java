@@ -3,6 +3,7 @@ package ru.otus.lesson05.service.validator;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ContextConfiguration;
 import ru.otus.lesson05.model.Question;
 import ru.otus.lesson05.model.QuizeResult;
 
@@ -17,6 +18,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * @date 15.06.2021
  */
 @SpringBootTest
+@ContextConfiguration(classes = QuizeCalculatorImpl.class)
 class QuizeCalculatorImplTest {
   @Autowired
   private QuizeCalculator quizeCalculator;

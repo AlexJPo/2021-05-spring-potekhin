@@ -1,5 +1,6 @@
 package ru.otus.lesson05.service.interview;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.otus.lesson05.model.Question;
 import ru.otus.lesson05.model.Quize;
@@ -20,6 +21,7 @@ import java.util.Map;
  * @date 14.06.2021
  */
 @Service
+@RequiredArgsConstructor
 public class InterviewServiceImpl implements InterviewService {
   private final QuizeParserService quizeParserService;
   private final CsvReaderService readerService;
@@ -28,31 +30,29 @@ public class InterviewServiceImpl implements InterviewService {
   private final StudentService studentService;
   private final QuizeService quizeService;
 
-  public InterviewServiceImpl(QuizeParserService quizeParserService,
-                              CsvReaderService readerService,
-                              QuizeCalculator quizeValidator,
-                              LocalizeService localizeService,
-                              StudentService studentService,
-                              QuizeService quizeService) {
-    this.quizeParserService = quizeParserService;
-    this.readerService = readerService;
-    this.quizeValidator = quizeValidator;
-    this.localizeService = localizeService;
-    this.studentService = studentService;
-    this.quizeService = quizeService;
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public void start() {
+    final Student student = studentService.register();
+    startInterview(student);
   }
 
   /**
    * {@inheritDoc}
    */
   @Override
-  public void start() {
+  public void start(final Student student) {
+    startInterview(student);
+  }
+
+  private void startInterview(final Student student) {
     localizeService.showMessage("interview.start");
     final List<String> data = readerService.read();
     final Quize quize = quizeParserService.parse(data);
     localizeService.showMessage("interview.complete");
 
-    final Student student = studentService.register();
     final Map<Question, Integer> studentAnswers = quizeService.start(quize.getQuestions());
     final QuizeResult result = quizeValidator.calculatePoints(studentAnswers);
 

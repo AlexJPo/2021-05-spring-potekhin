@@ -1,10 +1,14 @@
 package ru.otus.lesson05.service.parser;
 
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
+import ru.otus.lesson05.config.CSVProperties;
 import ru.otus.lesson05.model.Question;
 import ru.otus.lesson05.model.Quize;
 
@@ -12,41 +16,53 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.when;
 
 /**
  * @author Aleksey.Potekhin
  * @date 14.06.2021
  */
-@SpringBootTest
+@SpringBootTest(classes = { QuizeParserServiceImpl.class, CSVProperties.class})
 class QuizeParserServiceImplTest {
 
   @Autowired
   private QuizeParserService parserService;
+  @MockBean
+  private CSVProperties csvProperties;
 
+  @BeforeEach
+  public void setUp() {
+    when(csvProperties.getFieldMinSize()).thenReturn(2);
+    when(csvProperties.getAnswerVariantSeparator()).thenReturn(",");
+    when(csvProperties.getSeparator()).thenReturn(";");
+  }
+
+  @DisplayName("Отсутвие вопросов при ошибках парсинга")
   @Test
   public void parse_returnEmptyObject() {
     Quize result = parserService.parse(null);
-    assertNull(result.getQuestions());
+    assertTrue(result.getQuestions().isEmpty());
 
-    List<String> filledData = new ArrayList<>();
+    final List<String> filledData = new ArrayList<>();
     result = parserService.parse(filledData);
-    assertNull(result.getQuestions());
+    assertTrue(result.getQuestions().isEmpty());
 
     filledData.add("Java is program language?(y/n);y");
     result = parserService.parse(filledData);
-    assertNull(result.getQuestions());
+    assertTrue(result.getQuestions().isEmpty());
 
     filledData.set(0, "Java is program language?(y/n);y,n;y");
     result = parserService.parse(filledData);
-    assertNull(result.getQuestions());
+    assertTrue(result.getQuestions().isEmpty());
   }
 
+  @DisplayName("Наличие вопросов после успешного парсинга")
   @Test
   public void parse_returnFilledObject() {
-    List<String> filledData = new ArrayList<>();
+    final List<String> filledData = new ArrayList<>();
     filledData.add("Java is program language?(y/n);y,n;1");
 
-    Quize result = parserService.parse(filledData);
+    final Quize result = parserService.parse(filledData);
     assertFalse(result.getQuestions().isEmpty());
 
     Question question = result.getQuestions().get(0);

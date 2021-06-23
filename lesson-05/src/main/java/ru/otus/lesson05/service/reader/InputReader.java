@@ -1,7 +1,7 @@
 package ru.otus.lesson05.service.reader;
 
 /**
- * @author ajp
+ * @author Aleksey.Potekhin
  * @date 15.06.2021
  */
 public interface InputReader {

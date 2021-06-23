@@ -1,5 +1,6 @@
 package ru.otus.lesson05.service.quize;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import ru.otus.lesson05.model.Question;
@@ -18,15 +19,10 @@ import static ru.otus.lesson05.utils.QuizeHelper.stringIsNumber;
  * @date 15.06.2021
  */
 @Service
+@RequiredArgsConstructor
 public class QuizeServiceImpl implements QuizeService {
   private final LocalizeService localizeService;
   private final InputReader inputReader;
-
-  public QuizeServiceImpl(LocalizeService localizeService,
-                          InputReader inputReader) {
-    this.localizeService = localizeService;
-    this.inputReader = inputReader;
-  }
 
   /**
    * {@inheritDoc}
