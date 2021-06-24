@@ -45,6 +45,5 @@ public class AuthorDaoJdbc implements AuthorDao {
     } catch (EmptyResultDataAccessException e) {
       throw new NotFoundRowException(e);
     }
-
   }
 }

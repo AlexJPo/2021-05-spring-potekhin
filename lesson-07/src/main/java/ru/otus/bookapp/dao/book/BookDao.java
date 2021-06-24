@@ -4,11 +4,16 @@ import ru.otus.bookapp.domain.Book;
 import ru.otus.bookapp.exception.NotFoundRowException;
 
 /**
- * @author ajp
+ * @author Aleksey.Potekhin
  * @date 23.06.2021
  */
 public interface BookDao {
-  int count();
+  /**
+   * Получение количества записей
+   *
+   * @return количество записей
+   */
+  long count();
 
   /**
    * Поиск книги по id

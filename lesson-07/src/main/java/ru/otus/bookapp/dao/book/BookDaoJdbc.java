@@ -9,18 +9,15 @@ import ru.otus.bookapp.exception.NotFoundRowException;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
 /**
- * @author ajp
+ * @author Aleksey.Potekhin
  * @date 23.06.2021
  */
 @Repository
 public class BookDaoJdbc implements BookDao {
-  private static final int DEFAULT_ROW_ID = 1;
-
   private final NamedParameterJdbcTemplate jdbc;
 
   public BookDaoJdbc(NamedParameterJdbcTemplate jdbc)
@@ -40,9 +37,12 @@ public class BookDaoJdbc implements BookDao {
     }
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
-  public int count() {
-    return jdbc.getJdbcTemplate().queryForObject("select count(*) from books", Integer.class);
+  public long count() {
+    return jdbc.getJdbcTemplate().queryForObject("select count(*) from books", Long.class);
   }
 
   /**
@@ -64,12 +64,7 @@ public class BookDaoJdbc implements BookDao {
    */
   @Override
   public void insert(final Book book) {
-    final Map<String, Object> params = new HashMap<>();
-    params.put("bookId", book.getId());
-    params.put("title", book.getTitle());
-    params.put("authorId", book.getAuthorId());
-    params.put("genreId", book.getGenreId());
-
+    final Map<String, Object> params = prepareQueryParameters(book);
     jdbc.update(
         "insert into books (id, title, author_id, genre_id) values(:bookId, :title, :authorId, :genreId)",
         params
@@ -81,16 +76,23 @@ public class BookDaoJdbc implements BookDao {
    */
   @Override
   public void update(final Book book) {
+    final Map<String, Object> params = prepareQueryParameters(book);
+    jdbc.update(
+        "update books set title = :title, author_id = :authorId, genre_id = :genreId where id = :bookId",
+        params
+    );
+  }
+
+  /**
+   * Формирование параметров для запроса
+   */
+  private Map<String, Object> prepareQueryParameters(final Book book) {
     final Map<String, Object> params = new HashMap<>();
     params.put("bookId", book.getId());
     params.put("title", book.getTitle());
     params.put("authorId", book.getAuthorId());
     params.put("genreId", book.getGenreId());
-
-    jdbc.update(
-        "update books set title = :title, author_id = :authorId, genre_id = :genreId where id = :bookId",
-        params
-    );
+    return params;
   }
 
   /**

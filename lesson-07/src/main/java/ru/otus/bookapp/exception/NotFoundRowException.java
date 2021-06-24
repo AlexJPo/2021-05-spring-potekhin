@@ -1,7 +1,7 @@
 package ru.otus.bookapp.exception;
 
 /**
- * @author ajp
+ * @author Aleksey.Potekhin
  * @date 24.06.2021
  */
 public class NotFoundRowException extends RuntimeException {

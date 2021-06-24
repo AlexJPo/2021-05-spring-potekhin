@@ -12,7 +12,7 @@ import ru.otus.bookapp.dto.BookDTO;
 import ru.otus.bookapp.exception.NotFoundRowException;
 
 /**
- * @author ajp
+ * @author Aleksey.Potekhin
  * @date 24.06.2021
  */
 @Service
@@ -78,7 +78,7 @@ public class BookServiceImpl implements BookService {
    * {@inheritDoc}
    */
   @Override
-  public int getTotalRows() {
+  public long getTotalRows() {
     return bookDao.count();
   }
 

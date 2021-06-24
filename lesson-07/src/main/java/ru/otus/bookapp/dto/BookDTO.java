@@ -6,7 +6,7 @@ import ru.otus.bookapp.domain.Author;
 import ru.otus.bookapp.domain.Genre;
 
 /**
- * @author ajp
+ * @author Aleksey.Potekhin
  * @date 24.06.2021
  */
 @Data

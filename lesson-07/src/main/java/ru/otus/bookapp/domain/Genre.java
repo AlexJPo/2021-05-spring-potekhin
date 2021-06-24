@@ -4,7 +4,7 @@ import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
 /**
- * @author ajp
+ * @author Aleksey.Potekhin
  * @date 23.06.2021
  */
 @Data

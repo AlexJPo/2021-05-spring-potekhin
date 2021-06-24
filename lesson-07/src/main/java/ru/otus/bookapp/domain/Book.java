@@ -3,7 +3,7 @@ package ru.otus.bookapp.domain;
 import lombok.Data;
 
 /**
- * @author ajp
+ * @author Aleksey.Potekhin
  * @date 23.06.2021
  */
 @Data

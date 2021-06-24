@@ -1,21 +1,22 @@
 package ru.otus.bookapp.dao.gener;
 
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 import ru.otus.bookapp.domain.Genre;
+import ru.otus.bookapp.exception.NotFoundRowException;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Map;
 
 /**
- * @author ajp
+ * @author Aleksey.Potekhin
  * @date 24.06.2021
  */
 @Repository
 public class GenreDaoJdbc implements GenreDao {
-  private static final int DEFAULT_ROW_ID = 1;
   private final NamedParameterJdbcTemplate jdbc;
 
   public GenreDaoJdbc(NamedParameterJdbcTemplate jdbc)
@@ -36,18 +37,13 @@ public class GenreDaoJdbc implements GenreDao {
    * {@inheritDoc}
    */
   @Override
-  public long nextId() {
-    final Long result = jdbc.getJdbcOperations().queryForObject("select MAX(ID) from genres", Long.class);
-    return result == null ? DEFAULT_ROW_ID : result + 1;
-  }
-
-  /**
-   * {@inheritDoc}
-   */
-  @Override
-  public Genre findById(long id) {
-    return jdbc.queryForObject(
-        "select id, title from genres where id = :id", Map.of("id", id), new GenreMapper()
-    );
+  public Genre findById(final long id) throws NotFoundRowException {
+    try {
+      return jdbc.queryForObject(
+          "select id, title from genres where id = :id", Map.of("id", id), new GenreMapper()
+      );
+    } catch (EmptyResultDataAccessException e) {
+      throw new NotFoundRowException(e);
+    }
   }
 }
