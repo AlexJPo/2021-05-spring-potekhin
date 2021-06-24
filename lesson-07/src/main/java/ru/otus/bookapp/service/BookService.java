@@ -1,6 +1,9 @@
 package ru.otus.bookapp.service;
 
+import ru.otus.bookapp.domain.Book;
 import ru.otus.bookapp.dto.BookDTO;
+
+import java.util.List;
 
 /**
  * @author Aleksey.Potekhin
@@ -20,7 +23,7 @@ public interface BookService {
    *
    * @param id id книги
    */
-  void deleteById(long id);
+  String deleteById(long id);
 
   /**
    * Добавление книги
@@ -29,7 +32,7 @@ public interface BookService {
    * @param authorId id автора
    * @param genreId id книги
    */
-  void insert(String bookTitle, long authorId, long genreId);
+  String insert(String bookTitle, long authorId, long genreId);
 
   /**
    * Получение количества строк
@@ -44,7 +47,7 @@ public interface BookService {
    * @param bookId id книги
    * @param authorId id автора
    */
-  void updateAuthor(long bookId, long authorId);
+  String updateAuthor(long bookId, long authorId);
 
   /**
    * Изменение жанра книги
@@ -52,5 +55,10 @@ public interface BookService {
    * @param bookId id книги
    * @param genreId id жанра
    */
-  void updateGenre(long bookId, long genreId);
+  String updateGenre(long bookId, long genreId);
+
+  /**
+   * Получение списка всех книг
+   */
+  List<Book> getAllBooks();
 }

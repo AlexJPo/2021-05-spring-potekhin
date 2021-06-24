@@ -10,6 +10,7 @@ import ru.otus.bookapp.domain.Book;
 import ru.otus.bookapp.domain.Genre;
 import ru.otus.bookapp.dto.BookDTO;
 import ru.otus.bookapp.exception.NotFoundRowException;
+import java.util.List;
 
 /**
  * @author Aleksey.Potekhin
@@ -41,15 +42,13 @@ public class BookServiceImpl implements BookService {
    * {@inheritDoc}
    */
   @Override
-  public void deleteById(final long id) {
-    System.out.println("Remove book with 'id' = " + id);
-
+  public String deleteById(final long id) {
     try {
       bookDao.findById(id);
       bookDao.deleteById(id);
-      System.out.println("Book successful remove");
+      return "Book successful remove";
     } catch (NotFoundRowException re) {
-      System.out.println("Book with id = " + id + " not present");
+      return "Book with id = " + id + " not present";
     }
   }
 
@@ -57,21 +56,20 @@ public class BookServiceImpl implements BookService {
    * {@inheritDoc}
    */
   @Override
-  public void insert(final String bookTitle, final long authorId, final long genreId) {
+  public String insert(final String bookTitle, final long authorId, final long genreId) {
     final Author author = authorDao.findById(authorId);
     if (author == null) {
-      System.out.println("Author with id = " + authorId + " not present");
-      return;
+      return "Author with id = " + authorId + " not present";
     }
 
     final Genre genre = genreDao.findById(genreId);
     if (genre == null) {
-      System.out.println("Genre with id = " + genreId + " not present");
-      return;
+      return "Genre with id = " + genreId + " not present";
     }
 
     Book insertBook = new Book(bookDao.nextId(), bookTitle, authorId, genreId);
     bookDao.insert(insertBook);
+    return "Successful insert";
   }
 
   /**
@@ -86,53 +84,59 @@ public class BookServiceImpl implements BookService {
    * {@inheritDoc}
    */
   @Override
-  public void updateAuthor(final long bookId, final long authorId) {
+  public String updateAuthor(final long bookId, final long authorId) {
     final Author author = authorDao.findById(authorId);
     if (author == null) {
-      System.out.println("Author with id = " + authorId + " not present");
-      return;
+      return "Author with id = " + authorId + " not present";
     }
 
     Book currentBook;
     try {
       currentBook = bookDao.findById(bookId);
     } catch (NotFoundRowException re) {
-      System.out.println("Book with id = " + bookId + " not present");
-      return;
+      return "Book with id = " + bookId + " not present";
     }
 
     if (currentBook.getAuthorId() == authorId) {
-      return;
+      return "Try to update the same author";
     }
 
     final Book insertBook = new Book(currentBook.getId(), currentBook.getTitle(), authorId, currentBook.getGenreId());
     bookDao.update(insertBook);
+    return "Successful update";
   }
 
   /**
    * {@inheritDoc}
    */
   @Override
-  public void updateGenre(long bookId, long genreId) {
+  public String updateGenre(long bookId, long genreId) {
     final Genre author = genreDao.findById(genreId);
     if (author == null) {
-      System.out.println("Genre with id = " + genreId + " not present");
-      return;
+      return "Genre with id = " + genreId + " not present";
     }
 
     Book currentBook;
     try {
       currentBook = bookDao.findById(bookId);
     } catch (NotFoundRowException re) {
-      System.out.println("Book with id = " + bookId + " not present");
-      return;
+      return "Book with id = " + bookId + " not present";
     }
 
     if (currentBook.getGenreId() == genreId) {
-      return;
+      return "Try to update the same genre";
     }
 
     final Book insertBook = new Book(currentBook.getId(), currentBook.getTitle(), currentBook.getAuthorId(), genreId);
     bookDao.update(insertBook);
+    return "Successful update";
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public List<Book> getAllBooks() {
+    return bookDao.getAll();
   }
 }

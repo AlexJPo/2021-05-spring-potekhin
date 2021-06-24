@@ -10,6 +10,7 @@ import ru.otus.bookapp.exception.NotFoundRowException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -35,6 +36,14 @@ public class BookDaoJdbc implements BookDao {
 
       return new Book(id, name, authorId, genreId);
     }
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public long nextId() {
+    return jdbc.getJdbcOperations().queryForObject("select MAX(ID) from genres", Long.class);
   }
 
   /**
@@ -107,7 +116,7 @@ public class BookDaoJdbc implements BookDao {
    * {@inheritDoc}
    */
   @Override
-  public long nextId() {
-    return jdbc.getJdbcOperations().queryForObject("select MAX(ID) from genres", Long.class);
+  public List<Book> getAll() {
+    return jdbc.query("select * from books", new BookMapper());
   }
 }

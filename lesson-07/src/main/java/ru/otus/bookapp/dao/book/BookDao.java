@@ -3,11 +3,20 @@ package ru.otus.bookapp.dao.book;
 import ru.otus.bookapp.domain.Book;
 import ru.otus.bookapp.exception.NotFoundRowException;
 
+import java.util.List;
+
 /**
  * @author Aleksey.Potekhin
  * @date 23.06.2021
  */
 public interface BookDao {
+  /**
+   * Получение следующего id в таблице
+   *
+   * @return  id книги
+   */
+  long nextId();
+
   /**
    * Получение количества записей
    *
@@ -46,9 +55,9 @@ public interface BookDao {
   void deleteById(Long id);
 
   /**
-   * Получение следующего id в таблице
+   * Получения списка всех книг
    *
-   * @return  id книги
+   * @return список книг
    */
-  long nextId();
+  List<Book> getAll();
 }

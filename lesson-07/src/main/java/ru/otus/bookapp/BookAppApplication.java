@@ -12,9 +12,11 @@ import ru.otus.bookapp.service.BookService;
 public class BookAppApplication {
 
 	public static void main(String[] args) throws Exception {
-		/*SpringApplication.run(BookAppApplication.class, args);
-		Console.main(args);*/
-		ApplicationContext context = SpringApplication.run(BookAppApplication.class, args);
+		SpringApplication.run(BookAppApplication.class, args);
+		/*Console.main(args);*/
+
+
+		/*ApplicationContext context = SpringApplication.run(BookAppApplication.class, args);
 		BookService bookService = context.getBean(BookService.class);
 
 		// select
@@ -61,7 +63,7 @@ public class BookAppApplication {
 		System.out.println("Result is: " + book);
 
 		System.out.println("\n");
-		System.out.println("Total rows after insert: " + bookService.getTotalRows());
+		System.out.println("Total rows after insert: " + bookService.getTotalRows());*/
 	}
 
 }
