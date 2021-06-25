@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.ContextConfiguration;
 import ru.otus.lesson05.model.Question;
 import ru.otus.lesson05.service.localize.LocalizeService;
 import ru.otus.lesson05.service.reader.InputReader;
@@ -24,6 +25,7 @@ import static org.mockito.Mockito.when;
  * @date 18.06.2021
  */
 @SpringBootTest
+@ContextConfiguration(classes = { QuizeServiceImpl.class })
 class QuizeServiceImplTest {
 
   @Autowired

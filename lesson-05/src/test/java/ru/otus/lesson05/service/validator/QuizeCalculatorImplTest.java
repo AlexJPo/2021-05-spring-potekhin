@@ -1,5 +1,6 @@
 package ru.otus.lesson05.service.validator;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -23,6 +24,7 @@ class QuizeCalculatorImplTest {
   @Autowired
   private QuizeCalculator quizeCalculator;
 
+  @DisplayName("Пустой результата опроса")
   @Test
   void calculatePoints_returnEmpty() {
     QuizeResult result = quizeCalculator.calculatePoints(null);
@@ -34,6 +36,7 @@ class QuizeCalculatorImplTest {
     assertEquals(0, result.getTotalQuestion());
   }
 
+  @DisplayName("Сформированный результат опроса")
   @Test
   void calculatePoints_returnResult() {
     final Map<Question, Integer> studentAnswers = new HashMap<>();

@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 import ru.otus.lesson05.config.CSVProperties;
@@ -22,7 +23,8 @@ import static org.mockito.Mockito.when;
  * @author Aleksey.Potekhin
  * @date 14.06.2021
  */
-@SpringBootTest(classes = { QuizeParserServiceImpl.class, CSVProperties.class})
+@SpringBootTest
+@ContextConfiguration(classes = { QuizeParserServiceImpl.class, CSVProperties.class, CSVProperties.class})
 class QuizeParserServiceImplTest {
 
   @Autowired
