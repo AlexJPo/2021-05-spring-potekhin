@@ -17,7 +17,7 @@ public class ApplicationShellComponent {
   private final InterviewService interviewService;
   private final RegistrationService registrationService;
 
-  @ShellMethod(value = "Login registration before interview", key = {"l", "login"})
+  @ShellMethod(value = "Registration student before interview", key = {"l", "login"})
   public void login() {
     registrationService.register();
   }

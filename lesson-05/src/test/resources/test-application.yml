@@ -1,7 +1,7 @@
 quize:
   correct-answer-counter: 3
   file-name: "quize.csv"
-  settings-csv:
+  settings:
     field-min-size: 3
     separator: ";"
     answer-variant-separator: ","

@@ -18,14 +18,10 @@ import java.util.stream.Collectors;
  */
 @Service
 public class QuizeParserServiceImpl implements QuizeParserService {
-  private final int csvFieldMinSize;
-  private final String fieldSeparator;
-  private final String answerVariantSeparator;
+  private final CSVProperties csvProperties;
 
   public QuizeParserServiceImpl(final CSVProperties csvProperties) {
-    csvFieldMinSize = csvProperties.getFieldMinSize();
-    fieldSeparator = csvProperties.getSeparator();
-    answerVariantSeparator = csvProperties.getAnswerVariantSeparator();
+    this.csvProperties = csvProperties;
   }
 
   /**
@@ -59,13 +55,13 @@ public class QuizeParserServiceImpl implements QuizeParserService {
    * @see Question
    */
   private Question convertStrToQuestion(final String str) {
-    final String[] questionTempData = str.split(fieldSeparator);
-    if (questionTempData.length != csvFieldMinSize) {
+    final String[] questionTempData = str.split(csvProperties.getSeparator());
+    if (questionTempData.length != csvProperties.getFieldMinSize()) {
       return new Question("", new ArrayList<>(), 0);
     }
 
     final String question = questionTempData[0];
-    final List<String> variantAnswers = Arrays.asList(questionTempData[1].split(answerVariantSeparator));
+    final List<String> variantAnswers = Arrays.asList(questionTempData[1].split(csvProperties.getAnswerVariantSeparator()));
 
     try {
       final Integer correctAnswer = Integer.valueOf(questionTempData[2]);
