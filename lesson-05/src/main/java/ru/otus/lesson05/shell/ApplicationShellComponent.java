@@ -24,6 +24,9 @@ public class ApplicationShellComponent {
 
   @ShellMethod(value = "Start interview", key = {"s", "start"})
   public void start() {
+    if (!registrationService.isRegistered()) {
+      registrationService.register();
+    }
     interviewService.start();
   }
 }
