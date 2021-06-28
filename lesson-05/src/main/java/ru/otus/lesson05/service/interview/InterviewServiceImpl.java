@@ -10,7 +10,7 @@ import ru.otus.lesson05.service.localize.LocalizeService;
 import ru.otus.lesson05.service.parser.QuizeParserService;
 import ru.otus.lesson05.service.quize.QuizeService;
 import ru.otus.lesson05.service.reader.CsvReaderService;
-import ru.otus.lesson05.service.student.StudentService;
+import ru.otus.lesson05.service.registration.RegistrationService;
 import ru.otus.lesson05.service.validator.QuizeCalculator;
 
 import java.util.List;
@@ -27,7 +27,7 @@ public class InterviewServiceImpl implements InterviewService {
   private final CsvReaderService readerService;
   private final QuizeCalculator quizeValidator;
   private final LocalizeService localizeService;
-  private final StudentService studentService;
+  private final RegistrationService registrationService;
   private final QuizeService quizeService;
 
   /**
@@ -35,15 +35,7 @@ public class InterviewServiceImpl implements InterviewService {
    */
   @Override
   public void start() {
-    final Student student = studentService.register();
-    startInterview(student);
-  }
-
-  /**
-   * {@inheritDoc}
-   */
-  @Override
-  public void start(final Student student) {
+    final Student student = registrationService.register();
     startInterview(student);
   }
 

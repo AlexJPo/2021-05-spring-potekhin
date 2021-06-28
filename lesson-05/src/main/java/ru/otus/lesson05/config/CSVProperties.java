@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
  * @date 14.06.2021
  */
 @Component
-@ConfigurationProperties(prefix = "quize.csv")
+@ConfigurationProperties(prefix = "quize.settings")
 @Getter
 @Setter
 public class CSVProperties {

@@ -1,4 +1,4 @@
-package ru.otus.lesson05.service.student;
+package ru.otus.lesson05.service.registration;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -18,11 +18,11 @@ import static org.mockito.Mockito.when;
  * @date 15.06.2021
  */
 @SpringBootTest
-@ContextConfiguration(classes = { StudentServiceImpl.class })
-class StudentServiceImplTest {
+@ContextConfiguration(classes = { RegistrationServiceImpl.class })
+class RegistrationServiceImplTest {
 
   @Autowired
-  private StudentService studentService;
+  private RegistrationService studentService;
 
   @MockBean
   private InputReader inputReader;
@@ -41,5 +41,23 @@ class StudentServiceImplTest {
 
     assertEquals(student.getName(), result.getName());
     assertEquals(student.getSurname(), result.getSurname());
+  }
+
+  @DisplayName("Только один студент будет зарегистрирован")
+  @Test
+  void registerOnlyOne() {
+    final Student firstStudent = new Student("Aleksey", "Potekhin");
+    when(inputReader.getInput()).thenReturn(firstStudent.getName(), firstStudent.getSurname());
+    studentService.register();
+
+    final Student secondStudent = new Student("Sergey", "Mironov");
+    when(inputReader.getInput()).thenReturn(secondStudent.getName(), secondStudent.getSurname());
+
+    final Student result = studentService.register();
+    assertNotNull(result.getName());
+    assertNotNull(result.getSurname());
+
+    assertNotEquals(firstStudent.getName(), secondStudent.getName());
+    assertNotEquals(firstStudent.getSurname(), secondStudent.getSurname());
   }
 }

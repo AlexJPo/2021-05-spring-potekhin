@@ -10,8 +10,9 @@ import ru.otus.lesson05.shell.ApplicationShellComponent;
 public class Main {
 
 	public static void main(String[] args) {
-		ApplicationContext context = SpringApplication.run(Main.class, args);
-		ApplicationShellComponent bean = context.getBean(ApplicationShellComponent.class);
+		SpringApplication.run(Main.class, args);
+		/*ApplicationContext context = SpringApplication.run(Main.class, args);
+		ApplicationShellComponent bean = context.getBean(ApplicationShellComponent.class);*/
 	}
 
 }

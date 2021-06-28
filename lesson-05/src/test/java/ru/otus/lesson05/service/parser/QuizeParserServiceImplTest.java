@@ -4,9 +4,15 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 import ru.otus.lesson05.config.CSVProperties;
@@ -24,8 +30,19 @@ import static org.mockito.Mockito.when;
  * @date 14.06.2021
  */
 @SpringBootTest
+@EnableConfigurationProperties
 @ContextConfiguration(classes = { QuizeParserServiceImpl.class, CSVProperties.class, CSVProperties.class})
 class QuizeParserServiceImplTest {
+
+  /*@EnableConfigurationProperties
+  public class TestConfiguration {
+
+    @Bean
+    @ConfigurationProperties(prefix = "quize.settings-csv")
+    public TestSettings settings (){
+      return new TestSettings();
+    }
+  }*/
 
   @Autowired
   private QuizeParserService parserService;
