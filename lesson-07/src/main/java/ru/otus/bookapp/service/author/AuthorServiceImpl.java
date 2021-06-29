@@ -6,6 +6,8 @@ import ru.otus.bookapp.dao.author.AuthorDao;
 import ru.otus.bookapp.domain.Author;
 import ru.otus.bookapp.exception.NotFoundRowException;
 
+import java.util.List;
+
 /**
  * @author Aleksey.Potekhin
  * @date 29.06.2021
@@ -21,6 +23,14 @@ public class AuthorServiceImpl implements AuthorService {
   @Override
   public Author getById(long authorId) throws NotFoundRowException {
     return authorDao.getById(authorId);
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public List<Author> getAll() {
+    return authorDao.getAll();
   }
 
 }

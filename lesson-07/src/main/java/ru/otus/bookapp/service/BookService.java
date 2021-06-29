@@ -34,17 +34,6 @@ public interface BookService {
    */
   String insert(String bookTitle, long authorId, long genreId);
 
-  /**
-   * Получение количества строк
-   *
-   * @return количество строк
-   */
-  long getTotalRows();
-
-  /**
-   * Получение списка всех книг
-   */
-  List<Book> getAllBooks();
 
   /**
    * Изменение данных о книге
@@ -55,4 +44,16 @@ public interface BookService {
    * @param genreId id жанра
    */
   String update(long id, String bookTitle, long authorId, long genreId);
+
+  /**
+   * Получение количества строк
+   *
+   * @return количество строк
+   */
+  long getTotalRows();
+
+  /**
+   * Получение списка всех книг
+   */
+  List<String> getAllBooks();
 }

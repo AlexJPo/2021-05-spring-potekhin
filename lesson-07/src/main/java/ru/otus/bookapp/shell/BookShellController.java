@@ -58,7 +58,7 @@ public class BookShellController {
   }
 
   @ShellMethod(value = "All books command", key = {"ab", "aBooks", "allBooks"})
-  public List<Book> allBooks() {
+  public List<String> allBooks() {
     return bookService.getAllBooks();
   }
 }

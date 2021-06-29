@@ -11,7 +11,10 @@ import ru.otus.bookapp.exception.NotFoundRowException;
 import ru.otus.bookapp.service.author.AuthorService;
 import ru.otus.bookapp.service.genre.GenreService;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * @author Aleksey.Potekhin
@@ -58,13 +61,15 @@ public class BookServiceImpl implements BookService {
    */
   @Override
   public String insert(final String bookTitle, final long authorId, final long genreId) {
-    final Author author = authorService.getById(authorId);
-    if (author == null) {
+    try {
+      authorService.getById(authorId);
+    } catch (NotFoundRowException re) {
       return "Author with id = " + authorId + " not present";
     }
 
-    final Genre genre = genreService.getById(genreId);
-    if (genre == null) {
+    try {
+      genreService.getById(genreId);
+    } catch (NotFoundRowException re) {
       return "Genre with id = " + genreId + " not present";
     }
 
@@ -114,7 +119,25 @@ public class BookServiceImpl implements BookService {
    * {@inheritDoc}
    */
   @Override
-  public List<Book> getAllBooks() {
-    return bookDao.getAll();
+  public List<String> getAllBooks() {
+    final Map<Long, String> authorList = authorService.getAll()
+        .stream()
+        .collect(Collectors.toMap(Author::getId, Author::getName));
+
+    final Map<Long, String> genreList = genreService.getAll()
+        .stream()
+        .collect(Collectors.toMap(Genre::getId, Genre::getTitle));
+
+    final List<Book> bookList = bookDao.getAll();
+    final List<String> result = new ArrayList<>();
+
+    bookList.forEach(book -> result.add(
+        String.format("Book author: %s, genre: %s, title: %s",
+            authorList.get(book.getAuthorId()),
+            genreList.get(book.getGenreId()),
+            book.getTitle()
+        )
+    ));
+    return result;
   }
 }

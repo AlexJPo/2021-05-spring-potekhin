@@ -9,6 +9,7 @@ import ru.otus.bookapp.exception.NotFoundRowException;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -36,6 +37,14 @@ public class GenreDaoJdbc implements GenreDao {
     } catch (EmptyResultDataAccessException e) {
       throw new NotFoundRowException(e);
     }
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public List<Genre> getAll() {
+    return jdbc.query("select id, title from genres", new GenreMapper());
   }
 
   private static class GenreMapper implements RowMapper<Genre> {

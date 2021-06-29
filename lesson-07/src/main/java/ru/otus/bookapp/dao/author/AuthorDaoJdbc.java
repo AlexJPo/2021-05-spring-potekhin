@@ -9,6 +9,7 @@ import ru.otus.bookapp.exception.NotFoundRowException;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -36,6 +37,14 @@ public class AuthorDaoJdbc implements AuthorDao {
     } catch (EmptyResultDataAccessException e) {
       throw new NotFoundRowException(e);
     }
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public List<Author> getAll() {
+    return jdbc.query("select id, name from authors", new AuthorMapper());
   }
 
   private static class AuthorMapper implements RowMapper<Author> {

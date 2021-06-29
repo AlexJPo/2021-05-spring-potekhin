@@ -6,6 +6,8 @@ import ru.otus.bookapp.dao.genre.GenreDao;
 import ru.otus.bookapp.domain.Genre;
 import ru.otus.bookapp.exception.NotFoundRowException;
 
+import java.util.List;
+
 /**
  * @author Aleksey.Potekhin
  * @date 29.06.2021
@@ -18,5 +20,10 @@ public class GenreServiceImpl implements GenreService {
   @Override
   public Genre getById(long genreId) throws NotFoundRowException {
     return genreDao.getById(genreId);
+  }
+
+  @Override
+  public List<Genre> getAll() {
+    return genreDao.getAll();
   }
 }
