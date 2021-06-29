@@ -1,5 +1,6 @@
 package ru.otus.bookapp.domain;
 
+import lombok.Builder;
 import lombok.Data;
 
 /**

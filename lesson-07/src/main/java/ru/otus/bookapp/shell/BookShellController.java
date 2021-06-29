@@ -7,6 +7,8 @@ import org.springframework.shell.standard.ShellOption;
 import ru.otus.bookapp.domain.Book;
 import ru.otus.bookapp.dto.BookDTO;
 import ru.otus.bookapp.service.BookService;
+import ru.otus.bookapp.service.author.AuthorService;
+import ru.otus.bookapp.service.genre.GenreService;
 
 import java.util.List;
 
@@ -18,6 +20,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class BookShellController {
   private final BookService bookService;
+  private final AuthorService authorService;
+  private final GenreService genreService;
 
   @ShellMethod(value = "Find book command", key = {"fb", "findBook"})
   public String findBook(@ShellOption(defaultValue = "1") long id) {
@@ -40,17 +44,15 @@ public class BookShellController {
     return bookService.deleteById(id);
   }
 
-  @ShellMethod(value = "Delete book command", key = {"uba", "ubAuthor", "updateBookAuthor"})
-  public String updateBookAuthor(long id, @ShellOption(defaultValue = "1") long authorId) {
-    return bookService.updateAuthor(id, authorId);
+  @ShellMethod(value = "Update book command", key = {"ub", "updateBook"})
+  public String updateBook(long id,
+                           @ShellOption(defaultValue = "default book title") String bookTitle,
+                           @ShellOption(defaultValue = "1") long authorId,
+                           @ShellOption(defaultValue = "1") long genreId) {
+    return bookService.update(id, bookTitle, authorId, genreId);
   }
 
-  @ShellMethod(value = "Delete book command", key = {"ubg", "ubGenre", "updateBookGenre"})
-  public String updateBookGenre(long id, @ShellOption(defaultValue = "1") long genreId) {
-    return bookService.updateAuthor(id, genreId);
-  }
-
-  @ShellMethod(value = "Delete book command", key = {"btr", "bRows", "bookTotalRows"})
+  @ShellMethod(value = "Total rows command", key = {"btr", "bRows", "bookTotalRows"})
   public long totalRows() {
     return bookService.getTotalRows();
   }

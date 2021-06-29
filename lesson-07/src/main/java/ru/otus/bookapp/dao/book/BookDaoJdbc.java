@@ -26,18 +26,6 @@ public class BookDaoJdbc implements BookDao {
     this.jdbc = jdbc;
   }
 
-  private static class BookMapper implements RowMapper<Book> {
-    @Override
-    public Book mapRow(ResultSet resultSet, int i) throws SQLException {
-      final long id = resultSet.getLong("id");
-      final String name = resultSet.getString("title");
-      final long authorId = resultSet.getLong("author_id");
-      final long genreId = resultSet.getLong("genre_id");
-
-      return new Book(id, name, authorId, genreId);
-    }
-  }
-
   /**
    * {@inheritDoc}
    */
@@ -58,10 +46,10 @@ public class BookDaoJdbc implements BookDao {
    * {@inheritDoc}
    */
   @Override
-  public Book findById(final Long id) throws NotFoundRowException {
+  public Book getById(final Long id) throws NotFoundRowException {
     try {
       return jdbc.queryForObject(
-          "select * from books where id = :id", Map.of("id", id), new BookMapper()
+          "select id, title, author_id, genre_id from books where id = :id", Map.of("id", id), new BookMapper()
       );
     } catch (EmptyResultDataAccessException e) {
       throw new NotFoundRowException(e);
@@ -93,18 +81,6 @@ public class BookDaoJdbc implements BookDao {
   }
 
   /**
-   * Формирование параметров для запроса
-   */
-  private Map<String, Object> prepareQueryParameters(final Book book) {
-    final Map<String, Object> params = new HashMap<>();
-    params.put("bookId", book.getId());
-    params.put("title", book.getTitle());
-    params.put("authorId", book.getAuthorId());
-    params.put("genreId", book.getGenreId());
-    return params;
-  }
-
-  /**
    * {@inheritDoc}
    */
   @Override
@@ -117,6 +93,30 @@ public class BookDaoJdbc implements BookDao {
    */
   @Override
   public List<Book> getAll() {
-    return jdbc.query("select * from books", new BookMapper());
+    return jdbc.query("select id, title, author_id, genre_id from books", new BookMapper());
+  }
+
+  private static class BookMapper implements RowMapper<Book> {
+    @Override
+    public Book mapRow(ResultSet resultSet, int i) throws SQLException {
+      final long id = resultSet.getLong("id");
+      final String name = resultSet.getString("title");
+      final long authorId = resultSet.getLong("author_id");
+      final long genreId = resultSet.getLong("genre_id");
+
+      return new Book(id, name, authorId, genreId);
+    }
+  }
+
+  /**
+   * Формирование параметров для запроса
+   */
+  private Map<String, Object> prepareQueryParameters(final Book book) {
+    final Map<String, Object> params = new HashMap<>();
+    params.put("bookId", book.getId());
+    params.put("title", book.getTitle());
+    params.put("authorId", book.getAuthorId());
+    params.put("genreId", book.getGenreId());
+    return params;
   }
 }

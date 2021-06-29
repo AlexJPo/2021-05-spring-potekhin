@@ -15,7 +15,7 @@ import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 /**
- * @author ajp
+ * @author Aleksey.Potekhin
  * @date 24.06.2021
  */
 @JdbcTest
@@ -29,14 +29,14 @@ class BookDaoJdbcTest {
   @DisplayName("Выброс исключения, если нет такой книги")
   @Test
   public void findById_ThrowException() {
-    assertThatThrownBy(() -> bookDaoJdbc.findById(0L))
+    assertThatThrownBy(() -> bookDaoJdbc.getById(0L))
         .isInstanceOf(NotFoundRowException.class);
   }
 
   @DisplayName("Выброс исключения, если нет такой книги")
   @Test
   public void findById_ReturnBook() {
-    assertThatCode(() -> bookDaoJdbc.findById(EXISTING_BOOK_ID))
+    assertThatCode(() -> bookDaoJdbc.getById(EXISTING_BOOK_ID))
         .doesNotThrowAnyException();
   }
 
@@ -46,40 +46,40 @@ class BookDaoJdbcTest {
     final Book insertBook = new Book(bookDaoJdbc.nextId(), "Book insert test", 1L, 1L);
     bookDaoJdbc.insert(insertBook);
 
-    final Book findBook = bookDaoJdbc.findById(insertBook.getId());
+    final Book findBook = bookDaoJdbc.getById(insertBook.getId());
     assertThat(findBook).usingRecursiveComparison().isEqualTo(insertBook);
   }
 
   @DisplayName("Изменение данных книги")
   @Test
   public void updateBook() {
-    assertThatCode(() -> bookDaoJdbc.findById(EXISTING_BOOK_ID))
+    assertThatCode(() -> bookDaoJdbc.getById(EXISTING_BOOK_ID))
         .doesNotThrowAnyException();
 
-    final Book oldBook = bookDaoJdbc.findById(EXISTING_BOOK_ID);
+    final Book oldBook = bookDaoJdbc.getById(EXISTING_BOOK_ID);
     final Book book = new Book(oldBook.getId(), "Book update test", 2L, 2L);
     bookDaoJdbc.update(book);
 
-    final Book newBook = bookDaoJdbc.findById(oldBook.getId());
+    final Book newBook = bookDaoJdbc.getById(oldBook.getId());
     assertThat(newBook).usingRecursiveComparison().isNotEqualTo(oldBook);
   }
 
   @DisplayName("Удаление книги")
   @Test
   public void deleteBook() {
-    assertThatCode(() -> bookDaoJdbc.findById(EXISTING_BOOK_ID))
+    assertThatCode(() -> bookDaoJdbc.getById(EXISTING_BOOK_ID))
         .doesNotThrowAnyException();
 
     bookDaoJdbc.deleteById(EXISTING_BOOK_ID);
 
-    assertThatCode(() -> bookDaoJdbc.findById(EXISTING_BOOK_ID))
+    assertThatCode(() -> bookDaoJdbc.getById(EXISTING_BOOK_ID))
         .isInstanceOf(NotFoundRowException.class);
   }
 
   @DisplayName("Все книги")
   @Test
   public void getAll() {
-    final Book expectedPerson = bookDaoJdbc.findById(EXISTING_BOOK_ID);
+    final Book expectedPerson = bookDaoJdbc.getById(EXISTING_BOOK_ID);
     List<Book> actualPersonList = bookDaoJdbc.getAll();
     assertThat(actualPersonList)
         .usingFieldByFieldElementComparator()

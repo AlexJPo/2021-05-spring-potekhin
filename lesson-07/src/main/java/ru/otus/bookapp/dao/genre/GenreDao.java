@@ -1,4 +1,4 @@
-package ru.otus.bookapp.dao.gener;
+package ru.otus.bookapp.dao.genre;
 
 import ru.otus.bookapp.domain.Genre;
 import ru.otus.bookapp.exception.NotFoundRowException;
@@ -15,5 +15,5 @@ public interface GenreDao {
    * @return жанр
    * @throws NotFoundRowException если отсутствует запись
    */
-  Genre findById(long id) throws NotFoundRowException;
+  Genre getById(long id) throws NotFoundRowException;
 }

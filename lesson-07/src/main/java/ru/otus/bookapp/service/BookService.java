@@ -42,23 +42,17 @@ public interface BookService {
   long getTotalRows();
 
   /**
-   * Изменение автора книги
-   *
-   * @param bookId id книги
-   * @param authorId id автора
-   */
-  String updateAuthor(long bookId, long authorId);
-
-  /**
-   * Изменение жанра книги
-   *
-   * @param bookId id книги
-   * @param genreId id жанра
-   */
-  String updateGenre(long bookId, long genreId);
-
-  /**
    * Получение списка всех книг
    */
   List<Book> getAllBooks();
+
+  /**
+   * Изменение данных о книге
+   *
+   * @param id id книги
+   * @param bookTitle название
+   * @param authorId id автора
+   * @param genreId id жанра
+   */
+  String update(long id, String bookTitle, long authorId, long genreId);
 }

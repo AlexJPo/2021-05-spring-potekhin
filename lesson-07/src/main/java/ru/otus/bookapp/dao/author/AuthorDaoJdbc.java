@@ -24,26 +24,26 @@ public class AuthorDaoJdbc implements AuthorDao {
     this.jdbc = jdbc;
   }
 
-  private static class AuthorMapper implements RowMapper<Author> {
-    @Override
-    public Author mapRow(ResultSet resultSet, int i) throws SQLException {
-      long id = resultSet.getLong("id");
-      String name = resultSet.getString("name");
-      return new Author(id, name);
-    }
-  }
-
   /**
    * {@inheritDoc}
    */
   @Override
-  public Author findById(final long id) throws NotFoundRowException {
+  public Author getById(final long id) throws NotFoundRowException {
     try {
       return jdbc.queryForObject(
           "select id, name from authors where id = :id", Map.of("id", id), new AuthorMapper()
       );
     } catch (EmptyResultDataAccessException e) {
       throw new NotFoundRowException(e);
+    }
+  }
+
+  private static class AuthorMapper implements RowMapper<Author> {
+    @Override
+    public Author mapRow(ResultSet resultSet, int i) throws SQLException {
+      long id = resultSet.getLong("id");
+      String name = resultSet.getString("name");
+      return new Author(id, name);
     }
   }
 }

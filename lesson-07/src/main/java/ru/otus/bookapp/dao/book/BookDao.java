@@ -31,7 +31,7 @@ public interface BookDao {
    * @return книга
    * @throws NotFoundRowException если отсутвует запись
    */
-  Book findById(Long id) throws NotFoundRowException;
+  Book getById(Long id) throws NotFoundRowException;
 
   /**
    * Добавление книги

@@ -2,14 +2,15 @@ package ru.otus.bookapp.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.otus.bookapp.dao.author.AuthorDao;
 import ru.otus.bookapp.dao.book.BookDao;
-import ru.otus.bookapp.dao.gener.GenreDao;
 import ru.otus.bookapp.domain.Author;
 import ru.otus.bookapp.domain.Book;
 import ru.otus.bookapp.domain.Genre;
 import ru.otus.bookapp.dto.BookDTO;
 import ru.otus.bookapp.exception.NotFoundRowException;
+import ru.otus.bookapp.service.author.AuthorService;
+import ru.otus.bookapp.service.genre.GenreService;
+
 import java.util.List;
 
 /**
@@ -20,8 +21,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class BookServiceImpl implements BookService {
   private final BookDao bookDao;
-  private final AuthorDao authorDao;
-  private final GenreDao genreDao;
+  private final AuthorService authorService;
+  private final GenreService genreService;
 
   /**
    * {@inheritDoc}
@@ -29,9 +30,9 @@ public class BookServiceImpl implements BookService {
   @Override
   public BookDTO getById(final long id) {
     try {
-      final Book book = bookDao.findById(id);
-      final Author author = authorDao.findById(book.getAuthorId());
-      final Genre genre = genreDao.findById(book.getGenreId());
+      final Book book = bookDao.getById(id);
+      final Author author = authorService.getById(book.getAuthorId());
+      final Genre genre = genreService.getById(book.getGenreId());
       return new BookDTO(book.getId(), book.getTitle(), author, genre);
     } catch (NotFoundRowException re) {
       return new BookDTO(null, null, null, null);
@@ -44,7 +45,7 @@ public class BookServiceImpl implements BookService {
   @Override
   public String deleteById(final long id) {
     try {
-      bookDao.findById(id);
+      bookDao.getById(id);
       bookDao.deleteById(id);
       return "Book successful remove";
     } catch (NotFoundRowException re) {
@@ -57,12 +58,12 @@ public class BookServiceImpl implements BookService {
    */
   @Override
   public String insert(final String bookTitle, final long authorId, final long genreId) {
-    final Author author = authorDao.findById(authorId);
+    final Author author = authorService.getById(authorId);
     if (author == null) {
       return "Author with id = " + authorId + " not present";
     }
 
-    final Genre genre = genreDao.findById(genreId);
+    final Genre genre = genreService.getById(genreId);
     if (genre == null) {
       return "Genre with id = " + genreId + " not present";
     }
@@ -76,33 +77,28 @@ public class BookServiceImpl implements BookService {
    * {@inheritDoc}
    */
   @Override
-  public long getTotalRows() {
-    return bookDao.count();
-  }
+  public String update(final long id, final String bookTitle, final long authorId, final long genreId) {
+    try {
+      bookDao.getById(id);
+    } catch (NotFoundRowException re) {
+      return "Book with id = " + id + " not present";
+    }
 
-  /**
-   * {@inheritDoc}
-   */
-  @Override
-  public String updateAuthor(final long bookId, final long authorId) {
-    final Author author = authorDao.findById(authorId);
-    if (author == null) {
+    final Author author;
+    try {
+      author = authorService.getById(authorId);
+    } catch (NotFoundRowException re) {
       return "Author with id = " + authorId + " not present";
     }
 
-    Book currentBook;
+    final Genre genre;
     try {
-      currentBook = bookDao.findById(bookId);
+      genre = genreService.getById(genreId);
     } catch (NotFoundRowException re) {
-      return "Book with id = " + bookId + " not present";
+      return "Genre with id = " + genreId + " not present";
     }
 
-    if (currentBook.getAuthorId() == authorId) {
-      return "Try to update the same author";
-    }
-
-    final Book insertBook = new Book(currentBook.getId(), currentBook.getTitle(), authorId, currentBook.getGenreId());
-    bookDao.update(insertBook);
+    bookDao.update(new Book(id, bookTitle, author.getId(), genre.getId()));
     return "Successful update";
   }
 
@@ -110,26 +106,8 @@ public class BookServiceImpl implements BookService {
    * {@inheritDoc}
    */
   @Override
-  public String updateGenre(long bookId, long genreId) {
-    final Genre author = genreDao.findById(genreId);
-    if (author == null) {
-      return "Genre with id = " + genreId + " not present";
-    }
-
-    Book currentBook;
-    try {
-      currentBook = bookDao.findById(bookId);
-    } catch (NotFoundRowException re) {
-      return "Book with id = " + bookId + " not present";
-    }
-
-    if (currentBook.getGenreId() == genreId) {
-      return "Try to update the same genre";
-    }
-
-    final Book insertBook = new Book(currentBook.getId(), currentBook.getTitle(), currentBook.getAuthorId(), genreId);
-    bookDao.update(insertBook);
-    return "Successful update";
+  public long getTotalRows() {
+    return bookDao.count();
   }
 
   /**

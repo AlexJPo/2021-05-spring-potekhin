@@ -1,4 +1,4 @@
-package ru.otus.bookapp.dao.gener;
+package ru.otus.bookapp.dao.genre;
 
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
@@ -24,26 +24,26 @@ public class GenreDaoJdbc implements GenreDao {
     this.jdbc = jdbc;
   }
 
-  private static class GenreMapper implements RowMapper<Genre> {
-    @Override
-    public Genre mapRow(ResultSet resultSet, int i) throws SQLException {
-      final long id = resultSet.getLong("id");
-      final String name = resultSet.getString("title");
-      return new Genre(id, name);
-    }
-  }
-
   /**
    * {@inheritDoc}
    */
   @Override
-  public Genre findById(final long id) throws NotFoundRowException {
+  public Genre getById(final long id) throws NotFoundRowException {
     try {
       return jdbc.queryForObject(
           "select id, title from genres where id = :id", Map.of("id", id), new GenreMapper()
       );
     } catch (EmptyResultDataAccessException e) {
       throw new NotFoundRowException(e);
+    }
+  }
+
+  private static class GenreMapper implements RowMapper<Genre> {
+    @Override
+    public Genre mapRow(ResultSet resultSet, int i) throws SQLException {
+      final long id = resultSet.getLong("id");
+      final String name = resultSet.getString("title");
+      return new Genre(id, name);
     }
   }
 }
