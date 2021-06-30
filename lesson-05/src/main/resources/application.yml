@@ -1,0 +1,15 @@
+quize:
+  correct-answer-counter: 3
+  file-name: "quize.csv"
+  settings:
+    field-min-size: 3
+    separator: ";"
+    answer-variant-separator: ","
+
+localization: "ruRU"
+spring:
+  messages:
+    basename: "i18n/messages"
+  shell:
+    interactive:
+      enabled: true
