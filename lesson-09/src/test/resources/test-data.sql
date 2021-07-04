@@ -1,7 +1,7 @@
-insert into books (id, title) values (1, 'jdbc home work'), (2, 'test book');
+insert into books (title) values ('jdbc home work'), ('test book');
 
-insert into genres (id, title)
-values (1, 'Fantasy'), (2, 'Detective'), (3, 'Romantic'), (4, 'Comedy');
+insert into genres (title)
+values ('Fantasy'), ('Detective'), ('Romantic'), ('Comedy');
 
 insert into authors (name)
 values ('Aleksey'), ('Sergey'), ('Dmitriy'), ('Kira');
