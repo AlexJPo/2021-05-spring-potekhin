@@ -11,7 +11,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * @author ajp
+ * @author Aleksey.Potekhin
  * @date 04.07.2021
  */
 @DataJpaTest

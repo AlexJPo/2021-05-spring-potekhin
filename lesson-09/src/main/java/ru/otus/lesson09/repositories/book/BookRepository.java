@@ -1,13 +1,11 @@
 package ru.otus.lesson09.repositories.book;
 
 import ru.otus.lesson09.model.Book;
-import ru.otus.lesson09.model.Comment;
-
 import java.util.List;
 import java.util.Optional;
 
 /**
- * @author ajp
+ * @author Aleksey.Potekhin
  * @date 04.07.2021
  */
 public interface BookRepository {

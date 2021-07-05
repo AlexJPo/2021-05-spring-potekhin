@@ -8,7 +8,7 @@ import ru.otus.lesson09.repositories.comment.CommentRepository;
 import java.util.List;
 
 /**
- * @author ajp
+ * @author Aleksey.Potekhin
  * @date 04.07.2021
  */
 @Service

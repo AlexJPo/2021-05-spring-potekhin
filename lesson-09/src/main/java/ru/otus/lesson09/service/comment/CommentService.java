@@ -3,10 +3,9 @@ package ru.otus.lesson09.service.comment;
 import ru.otus.lesson09.model.Comment;
 
 import java.util.List;
-import java.util.Optional;
 
 /**
- * @author ajp
+ * @author Aleksey.Potekhin
  * @date 04.07.2021
  */
 public interface CommentService {

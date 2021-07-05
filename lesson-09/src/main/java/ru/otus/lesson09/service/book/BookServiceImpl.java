@@ -17,15 +17,13 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
- * @author ajp
+ * @author Aleksey.Potekhin
  * @date 04.07.2021
  */
 @Service
 @RequiredArgsConstructor
 public class BookServiceImpl implements BookService {
   private final BookRepository bookRepository;
-  private final AuthorService authorService;
-  private final GenreService genreService;
 
   /**
    * {@inheritDoc}
@@ -52,11 +50,6 @@ public class BookServiceImpl implements BookService {
       return "Book successful remove";
     }
     return "Book with id = " + id + " not present";
-  }
-
-  @Override
-  public long getTotalRows() {
-    return 0;
   }
 
   /**

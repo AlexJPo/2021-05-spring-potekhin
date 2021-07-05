@@ -3,7 +3,7 @@ package ru.otus.lesson09.service.book;
 import java.util.List;
 
 /**
- * @author ajp
+ * @author Aleksey.Potekhin
  * @date 04.07.2021
  */
 public interface BookService {
@@ -41,12 +41,5 @@ public interface BookService {
    * @param id id книги
    */
   String deleteById(long id);
-
-  /**
-   * Получение количества строк
-   *
-   * @return количество строк
-   */
-  long getTotalRows();
 
 }

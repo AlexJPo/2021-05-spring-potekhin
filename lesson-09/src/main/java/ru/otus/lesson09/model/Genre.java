@@ -12,7 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 /**
- * @author ajp
+ * @author Aleksey.Potekhin
  * @date 03.07.2021
  */
 @Data
