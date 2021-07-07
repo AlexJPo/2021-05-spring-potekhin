@@ -120,11 +120,14 @@ class BookRepositoryJpaTest {
   @Test
   void update() {
     final long firstBookId = 1L;
+
     val firstBook = em.find(Book.class, firstBookId);
     final String oldTitle = firstBook.getTitle();
+    firstBook.setTitle(BOOK_TITLE);
+
     em.detach(firstBook);
 
-    repositoryJpa.updateTitleById(firstBookId, BOOK_TITLE);
+    repositoryJpa.update(firstBook);
     val updatedBook = em.find(Book.class, firstBookId);
 
     assertThat(updatedBook.getTitle())
@@ -138,9 +141,8 @@ class BookRepositoryJpaTest {
     final long firstBookId = 1L;
     val firstBook = em.find(Book.class, firstBookId);
     assertThat(firstBook).isNotNull();
-    em.detach(firstBook);
 
-    repositoryJpa.deleteById(firstBookId);
+    repositoryJpa.delete(firstBook);
     val deletedBook = em.find(Book.class, firstBookId);
 
     assertThat(deletedBook).isNull();

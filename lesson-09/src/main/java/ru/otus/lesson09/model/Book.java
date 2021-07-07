@@ -39,14 +39,14 @@ public class Book {
   private String title;
 
   @BatchSize(size = 5)
-  @Fetch(FetchMode.SUBSELECT)
-  @OneToMany(targetEntity = Comment.class, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+  @Fetch(FetchMode.JOIN)
+  @OneToMany(targetEntity = Comment.class, cascade = CascadeType.ALL)
   @JoinColumn(name = "book_id")
   private List<Comment> comments;
 
   @BatchSize(size = 5)
   @Fetch(FetchMode.SUBSELECT)
-  @ManyToMany(targetEntity = Author.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+  @ManyToMany(targetEntity = Author.class, fetch = FetchType.EAGER, cascade = CascadeType.ALL)
   @JoinTable(name = "books_authors",
       joinColumns = @JoinColumn(name = "book_id"),
       inverseJoinColumns = @JoinColumn(name = "author_id"))
@@ -54,7 +54,7 @@ public class Book {
 
   @BatchSize(size = 5)
   @Fetch(FetchMode.SUBSELECT)
-  @ManyToMany(targetEntity = Genre.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+  @ManyToMany(targetEntity = Genre.class, fetch = FetchType.EAGER, cascade = CascadeType.ALL)
   @JoinTable(name = "books_genres",
       joinColumns = @JoinColumn(name = "book_id"),
       inverseJoinColumns = @JoinColumn(name = "genre_id"))

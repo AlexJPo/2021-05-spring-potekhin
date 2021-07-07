@@ -6,7 +6,6 @@ import ru.otus.lesson09.model.Book;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
 import java.util.List;
 import java.util.Optional;
 
@@ -60,11 +59,8 @@ public class BookRepositoryJpa implements BookRepository {
    */
   @Transactional
   @Override
-  public void updateTitleById(final long id, final String title) {
-    Query query = entityManager.createQuery("update Book b set b.title = :title where b.id = :id");
-    query.setParameter("id", id);
-    query.setParameter("title", title);
-    query.executeUpdate();
+  public void update(final Book book) {
+    entityManager.merge(book);
   }
 
   /**
@@ -72,9 +68,7 @@ public class BookRepositoryJpa implements BookRepository {
    */
   @Transactional
   @Override
-  public void deleteById(final long id) {
-    Query query = entityManager.createQuery("delete from Book b where b.id = :id");
-    query.setParameter("id", id);
-    query.executeUpdate();
+  public void delete(final Book book) {
+    entityManager.remove(book);
   }
 }

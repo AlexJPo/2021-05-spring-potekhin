@@ -44,8 +44,8 @@ public class CommentServiceImpl implements CommentService {
    * {@inheritDoc}
    */
   @Override
-  public void updateTextById(final long id, final String text) {
-    commentRepository.updateTextById(id, text);
+  public void update(final Comment comment) {
+    commentRepository.update(comment);
   }
 
   /**

@@ -59,11 +59,8 @@ public class CommentRepositoryJpa implements CommentRepository {
    */
   @Transactional
   @Override
-  public void updateTextById(final long id, final String text) {
-    Query query = entityManager.createQuery("update Comment с set с.text = :text where с.id = :id");
-    query.setParameter("text", text);
-    query.setParameter("id", id);
-    query.executeUpdate();
+  public void update(final Comment comment) {
+    entityManager.merge(comment);;
   }
 
   /**
@@ -72,8 +69,7 @@ public class CommentRepositoryJpa implements CommentRepository {
   @Transactional
   @Override
   public void deleteById(final long id) {
-    Query query = entityManager.createQuery("delete from Comment c where c.id = :id");
-    query.setParameter("id", id);
-    query.executeUpdate();
+    final Optional<Comment> comment = getById(id);
+    comment.ifPresent(obj -> entityManager.remove(obj));
   }
 }

@@ -72,7 +72,9 @@ class CommentRepositoryJpaTest {
   public void update() {
     val bookCommentBeforeUpdate = repositoryJpa.getById(1L);
     final long commentId = bookCommentBeforeUpdate.get().getId();
-    repositoryJpa.updateTextById(commentId, "update comment");
+    final Comment updateComment = bookCommentBeforeUpdate.get();
+    updateComment.setText("update comment");
+    repositoryJpa.update(updateComment);
 
     val bookCommentAfterUpdate  = em.find(Comment.class, commentId);
     assertThat(bookCommentBeforeUpdate)

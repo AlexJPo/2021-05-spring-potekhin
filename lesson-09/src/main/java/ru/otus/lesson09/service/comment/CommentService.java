@@ -33,12 +33,11 @@ public interface CommentService {
   List<Comment> findAll();
 
   /**
-   * Обновление комментаряи по id
+   * Обновление комментаряи
    *
-   * @param id id комментария
-   * @param text текст комментария
+   * @param comment комментарий
    */
-  void updateTextById(long id, String text);
+  void update(Comment comment);
 
   /**
    * Удаление комментария по id

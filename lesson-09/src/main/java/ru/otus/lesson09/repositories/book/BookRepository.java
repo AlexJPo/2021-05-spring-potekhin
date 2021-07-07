@@ -33,17 +33,15 @@ public interface BookRepository {
   List<Book> findAll();
 
   /**
-   * Обновление книги по id
-   *
-   * @param id id книги
-   * @param title название книги
+   * Обновление книги
    */
-  void updateTitleById(long id, String title);
+  void update(Book updatedBook);
 
   /**
-   * Удаление книги по id
+   * Удаление книги
    *
-   * @param id id книги
+   * @param book книга
    */
-  void deleteById(long id);
+  void delete(Book book);
+
 }

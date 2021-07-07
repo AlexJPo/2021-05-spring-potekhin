@@ -3,13 +3,13 @@ package ru.otus.lesson09.service.book;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 import ru.otus.lesson09.model.Author;
 import ru.otus.lesson09.model.Book;
 import ru.otus.lesson09.model.Comment;
 import ru.otus.lesson09.model.Genre;
 import ru.otus.lesson09.repositories.book.BookRepository;
-import ru.otus.lesson09.service.author.AuthorService;
-import ru.otus.lesson09.service.genre.GenreService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +28,6 @@ public class BookServiceImpl implements BookService {
   /**
    * {@inheritDoc}
    */
-  @Transactional
   @Override
   public String getById(final long id) {
     final Optional<Book> book = bookRepository.getById(id);
@@ -46,7 +45,7 @@ public class BookServiceImpl implements BookService {
   public String deleteById(final long id) {
     final Optional<Book> book = bookRepository.getById(id);
     if (book.isPresent()) {
-      bookRepository.deleteById(id);
+      bookRepository.delete(book.get());
       return "Book successful remove";
     }
     return "Book with id = " + id + " not present";
@@ -71,7 +70,9 @@ public class BookServiceImpl implements BookService {
   public String update(final long id, final String bookTitle) {
     final Optional<Book> book = bookRepository.getById(id);
     if (book.isPresent()) {
-      bookRepository.updateTitleById(id, bookTitle);
+      final Book updatedBook = book.get();
+      updatedBook.setTitle(bookTitle);
+      bookRepository.update(updatedBook);
       return "Book successful update";
     }
     return "Book with id = " + id + " not present";
@@ -92,20 +93,35 @@ public class BookServiceImpl implements BookService {
   }
 
   private String mapBook(final Book book) {
-    final String authors = book.getAuthors()
-        .stream()
-        .map(Author::getName)
-        .collect(Collectors.joining(", "));
+    String authors;
+    if (CollectionUtils.isEmpty(book.getAuthors())) {
+      authors = "no authors";
+    } else {
+      authors = book.getAuthors()
+          .stream()
+          .map(Author::getName)
+          .collect(Collectors.joining(", "));
+    }
 
-    final String genres = book.getGenres()
-        .stream()
-        .map(Genre::getTitle)
-        .collect(Collectors.joining(", "));
+    String genres;
+    if (CollectionUtils.isEmpty(book.getGenres())) {
+      genres = "no genres";
+    } else {
+      genres = book.getGenres()
+          .stream()
+          .map(Genre::getTitle)
+          .collect(Collectors.joining(", "));
+    }
 
-    final String comments = book.getComments()
-        .stream()
-        .map(Comment::getText)
-        .collect(Collectors.joining(", "));
+    String comments;
+    if (CollectionUtils.isEmpty(book.getComments())) {
+      comments = "without comment";
+    } else {
+      comments = book.getComments()
+          .stream()
+          .map(Comment::getText)
+          .collect(Collectors.joining(", "));
+    }
 
     return String.format("Book title: %s\nAuthors: %s\nGenres: %s\nComments: %s\n----------------\n",
         book.getTitle(),
