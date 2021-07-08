@@ -4,10 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
-import org.springframework.util.StringUtils;
 import ru.otus.lesson09.model.Author;
 import ru.otus.lesson09.model.Book;
-import ru.otus.lesson09.model.Comment;
 import ru.otus.lesson09.model.Genre;
 import ru.otus.lesson09.repositories.book.BookRepository;
 
@@ -113,21 +111,10 @@ public class BookServiceImpl implements BookService {
           .collect(Collectors.joining(", "));
     }
 
-    String comments;
-    if (CollectionUtils.isEmpty(book.getComments())) {
-      comments = "without comment";
-    } else {
-      comments = book.getComments()
-          .stream()
-          .map(Comment::getText)
-          .collect(Collectors.joining(", "));
-    }
-
-    return String.format("Book title: %s\nAuthors: %s\nGenres: %s\nComments: %s\n----------------\n",
+    return String.format("Book title: %s\nAuthors: %s\nGenres: %s\n----------------\n",
         book.getTitle(),
         authors,
-        genres,
-        comments);
+        genres);
   }
 
 }

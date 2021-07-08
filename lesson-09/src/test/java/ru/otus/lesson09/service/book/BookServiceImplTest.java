@@ -20,7 +20,7 @@ import static org.mockito.ArgumentMatchers.anyObject;
 import static org.mockito.Mockito.when;
 
 /**
- * @author ajp
+ * @author Aleksey.Potekhin
  * @date 07.07.2021
  */
 @SpringBootTest
@@ -52,7 +52,7 @@ class BookServiceImplTest {
     when(bookRepository.getById(anyLong())).thenReturn(Optional.of(book));
 
     final long bookId = 0L;
-    assertEquals("Book title: Test book\nAuthors: no authors\nGenres: no genres\nComments: without comment\n----------------\n",
+    assertEquals("Book title: Test book\nAuthors: no authors\nGenres: no genres\n----------------\n",
         bookService.getById(bookId));
   }
 
@@ -108,7 +108,7 @@ class BookServiceImplTest {
     book.setTitle("Test book");
     when(bookRepository.findAll()).thenReturn(Arrays.asList(book));
 
-    assertEquals("Book title: Test book\nAuthors: no authors\nGenres: no genres\nComments: without comment\n----------------\n",
+    assertEquals("Book title: Test book\nAuthors: no authors\nGenres: no genres\n----------------\n",
         bookService.getAllBooks().get(1));
   }
 
@@ -123,10 +123,7 @@ class BookServiceImplTest {
 
     when(bookRepository.findAll()).thenReturn(Arrays.asList(book));
 
-    assertEquals("Book title: Test book\n" +
-            "Authors: Aleksey, Boris" +
-            "\nGenres: Comedy, Fantasy" +
-            "\nComments: without comment\n----------------\n",
+    assertEquals("Book title: Test book\nAuthors: Aleksey, Boris\nGenres: Comedy, Fantasy\n----------------\n",
         bookService.getAllBooks().get(1));
   }
 }
