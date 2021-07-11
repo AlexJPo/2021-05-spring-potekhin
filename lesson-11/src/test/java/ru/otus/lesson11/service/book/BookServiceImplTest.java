@@ -80,7 +80,9 @@ class BookServiceImplTest {
     when(bookRepository.save(anyObject())).thenReturn(new Book());
     final String bookTitle = "my saved book";
 
-    assertEquals("Book '" + bookTitle + "' successful save", bookService.save(bookTitle));
+    assertEquals("Book '" + bookTitle + "' successful save", bookService.save(bookTitle,
+        new String[] { "detective, fantasy" },
+        new String[] { "Tolstoy", "Pushkin" }));
   }
 
   @DisplayName("Книга не была обновлена")
@@ -89,7 +91,11 @@ class BookServiceImplTest {
     when(bookRepository.findById(anyLong())).thenReturn(Optional.empty());
 
     final long bookId = 1L;
-    assertEquals("Book with id = " + bookId + " not present", bookService.update(bookId, "New book title"));
+    assertEquals("Book with id = " + bookId + " not present",
+        bookService.update(bookId,
+            "New book title",
+            new String[] { "detective, fantasy" },
+            new String[] { "Tolstoy", "Pushkin" }));
   }
 
   @DisplayName("Книга была обновлена")
@@ -98,7 +104,11 @@ class BookServiceImplTest {
     when(bookRepository.findById(anyLong())).thenReturn(Optional.of(new Book()));
 
     final long bookId = 1L;
-    assertEquals("Book successful update", bookService.update(bookId, "New book title"));
+    assertEquals("Book successful update",
+        bookService.update(bookId,
+            "New book title",
+            new String[] { "detective, fantasy" },
+            new String[] { "Tolstoy", "Pushkin" }));
   }
 
   @DisplayName("Пустая книга")

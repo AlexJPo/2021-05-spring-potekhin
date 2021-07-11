@@ -23,8 +23,10 @@ public class BookShellController {
   }
 
   @ShellMethod(value = "Insert book command", key = {"ib", "insertBook"})
-  public String insertBook(@ShellOption(defaultValue = "default book title") String bookTitle) {
-    return bookService.save(bookTitle);
+  public String insertBook(@ShellOption(value = "-t", defaultValue = "default book title") String bookTitle,
+                           @ShellOption(value = "-g", defaultValue = "default book author") String[] genres,
+                           @ShellOption(value = "-a", defaultValue = "default book genre") String[] authors) {
+    return bookService.save(bookTitle, genres, authors);
   }
 
   @ShellMethod(value = "Delete book command", key = {"db", "deleteBook"})
@@ -33,8 +35,11 @@ public class BookShellController {
   }
 
   @ShellMethod(value = "Update book command", key = {"ub", "updateBook"})
-  public String updateBook(long id, @ShellOption(defaultValue = "default book title") String bookTitle) {
-    return bookService.update(id, bookTitle);
+  public String updateBook(long id,
+                           @ShellOption(value = "-t", defaultValue = "default book title") String bookTitle,
+                           @ShellOption(value = "-g", defaultValue = "default book author") String[] genres,
+                           @ShellOption(value = "-a", defaultValue = "default book genre") String[] authors) {
+    return bookService.update(id, bookTitle, genres, authors);
   }
 
   @ShellMethod(value = "All books command", key = {"ab", "aBooks", "allBooks"})

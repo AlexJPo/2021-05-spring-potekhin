@@ -12,7 +12,7 @@ public interface BookService {
    *
    * @param bookTitle название книги
    */
-  String save(String bookTitle);
+  String save(String bookTitle, String[] genres, String[] authors);
 
   /**
    * Поиск книги по id
@@ -33,7 +33,7 @@ public interface BookService {
    * @param id id книги
    * @param bookTitle название
    */
-  String update(long id, String bookTitle);
+  String update(long id, String bookTitle, String[] genres, String[] authors);
 
   /**
    * Удаление книги по id

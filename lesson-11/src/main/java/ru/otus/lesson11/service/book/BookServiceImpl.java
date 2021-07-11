@@ -55,8 +55,25 @@ public class BookServiceImpl implements BookService {
    */
   @Transactional
   @Override
-  public String save(final String bookTitle) {
+  public String save(final String bookTitle, final String[] genres, final String[] authors) {
     Book book = new Book(0L, bookTitle, null, null, null);
+
+    if (authors.length > 0) {
+      final List<Author> bookAuthors = new ArrayList<>();
+      for (String author : authors) {
+        bookAuthors.add(new Author(0L, author));
+      }
+      book.setAuthors(bookAuthors);
+    }
+
+    if (genres.length > 0) {
+      final List<Genre> bookGenres = new ArrayList<>();
+      for (String genre : genres) {
+        bookGenres.add(new Genre(0L, genre));
+      }
+      book.setGenres(bookGenres);
+    }
+
     bookRepository.save(book);
     return "Book '" + bookTitle + "' successful save";
   }
@@ -66,7 +83,7 @@ public class BookServiceImpl implements BookService {
    */
   @Transactional
   @Override
-  public String update(final long id, final String bookTitle) {
+  public String update(final long id, final String bookTitle, String[] genres, String[] authors) {
     final Optional<Book> book = bookRepository.findById(id);
     if (book.isPresent()) {
       final Book updatedBook = book.get();
