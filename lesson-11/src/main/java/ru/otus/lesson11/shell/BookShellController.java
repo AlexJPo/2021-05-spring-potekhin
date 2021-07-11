@@ -41,5 +41,10 @@ public class BookShellController {
   public List<String> allBooks() {
     return bookService.getAllBooks();
   }
+
+  @ShellMethod(value = "All comment for book command", key = {"bc", "bookComments"})
+  public String allCommentsForBook(long id) {
+    return bookService.getComments(id);
+  }
 }
 

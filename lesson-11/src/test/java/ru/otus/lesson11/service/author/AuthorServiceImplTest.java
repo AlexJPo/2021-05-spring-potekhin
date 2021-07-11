@@ -14,7 +14,7 @@ import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
 
 /**
- * @author ajp
+ * @author Aleksey.Potekhin
  * @date 07.07.2021
  */
 @SpringBootTest
@@ -35,8 +35,8 @@ class AuthorServiceImplTest {
   @DisplayName("Отсутвует автор при поиске по ID")
   @Test
   void getById_ReturnEntity() {
-    when(authorRepository.getById(anyLong()))
-        .thenReturn(new Author(1L, "Test author"));
+    when(authorRepository.findById(anyLong()))
+        .thenReturn(Optional.of(new Author(1L, "Test author")));
 
     final Optional<Author> author = authorService.getById(1L);
     assertTrue(author.isPresent());

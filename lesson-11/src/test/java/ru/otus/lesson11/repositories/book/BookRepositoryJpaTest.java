@@ -7,7 +7,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
-import org.springframework.context.annotation.Import;
 import ru.otus.lesson11.model.Author;
 import ru.otus.lesson11.model.Book;
 import ru.otus.lesson11.model.Comment;
@@ -23,7 +22,6 @@ import static org.junit.jupiter.api.Assertions.*;
  * @date 04.07.2021
  */
 @DataJpaTest
-@Import(BookRepository.class)
 class BookRepositoryJpaTest {
   private static final int EXPECTED_NUMBER_OF_BOOKS = 2;
   private static final long EXPECTED_QUERIES_COUNT = 4;

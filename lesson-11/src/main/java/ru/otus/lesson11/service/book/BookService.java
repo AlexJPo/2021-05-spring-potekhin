@@ -42,4 +42,11 @@ public interface BookService {
    */
   String deleteById(long id);
 
+  /**
+   * Поиск всех комментария по id книги
+   *
+   * @param id id книги
+   * @return списоку комментариев
+   */
+  String getComments(long id);
 }

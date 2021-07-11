@@ -1,9 +1,5 @@
 package ru.otus.lesson11.service.comment;
 
-import ru.otus.lesson11.model.Comment;
-
-import java.util.List;
-
 /**
  * @author Aleksey.Potekhin
  * @date 04.07.2021
@@ -12,10 +8,10 @@ public interface CommentService {
   /**
    * Сохраненеи коментария
    *
-   * @param comment комментарий
+   * @param text комментарий
    * @return комментарий
    */
-  Comment save(Comment comment);
+  String save(String text);
 
   /**
    * Поиск комментария по id
@@ -23,26 +19,20 @@ public interface CommentService {
    * @param id id комментария
    * @return комментарий
    */
-  Comment getById(long id);
-
-  /**
-   * Получение всех комментариев
-   *
-   * @return все комментарии
-   */
-  List<Comment> findAll();
+  String getById(long id);
 
   /**
    * Обновление комментаряи
    *
-   * @param comment комментарий
+   * @param id id комментария
+   * @param text комментарий
    */
-  void update(Comment comment);
+  String update(long id, String text);
 
   /**
    * Удаление комментария по id
    *
    * @param id id комментария
    */
-  void deleteById(long id);
+  String deleteById(long id);
 }

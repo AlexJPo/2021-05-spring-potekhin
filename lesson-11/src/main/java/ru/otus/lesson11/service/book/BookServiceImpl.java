@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 import ru.otus.lesson11.model.Author;
 import ru.otus.lesson11.model.Book;
+import ru.otus.lesson11.model.Comment;
 import ru.otus.lesson11.model.Genre;
 import ru.otus.lesson11.repositories.book.BookRepository;
 
@@ -117,4 +118,28 @@ public class BookServiceImpl implements BookService {
         genres);
   }
 
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public String getComments(final long id) {
+    final Optional<Book> finedBook = bookRepository.findById(id);
+    if (finedBook.isPresent()) {
+      final Book book = finedBook.get();
+      String comments;
+      if (CollectionUtils.isEmpty(book.getComments())) {
+        comments = "no book comments";
+      } else {
+        comments = book.getComments()
+            .stream()
+            .map(Comment::getText)
+            .collect(Collectors.joining(",\n"));
+      }
+
+      return String.format("Book: %s\nComments:\n%s\n----------------\n",
+          book.getTitle(),
+          comments);
+    }
+    return "Book with id = " + id + " not present";
+  }
 }
