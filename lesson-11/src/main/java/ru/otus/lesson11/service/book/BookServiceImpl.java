@@ -9,6 +9,9 @@ import ru.otus.lesson11.model.Book;
 import ru.otus.lesson11.model.Comment;
 import ru.otus.lesson11.model.Genre;
 import ru.otus.lesson11.repositories.book.BookRepository;
+import ru.otus.lesson11.repositories.comment.CommentRepository;
+import ru.otus.lesson11.service.comment.CommentService;
+import ru.otus.lesson11.service.mapper.BookEntityMapper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +26,8 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class BookServiceImpl implements BookService {
   private final BookRepository bookRepository;
+  private final BookEntityMapper bookEntityMapper;
+  private final CommentService commentSreService;
 
   /**
    * {@inheritDoc}
@@ -31,7 +36,7 @@ public class BookServiceImpl implements BookService {
   public String getById(final long id) {
     final Optional<Book> book = bookRepository.findById(id);
     if (book.isPresent()) {
-      return mapBook(book.get());
+      return bookEntityMapper.map(book.get());
     }
     return "Book with id = " + id + " not present";
   }
@@ -104,40 +109,14 @@ public class BookServiceImpl implements BookService {
     final List<String> result = new ArrayList<>();
     result.add("\n");
 
-    bookList.forEach(book -> result.add(mapBook(book)));
+    bookList.forEach(book -> result.add(bookEntityMapper.map(book)));
     return result;
-  }
-
-  private String mapBook(final Book book) {
-    String authors;
-    if (CollectionUtils.isEmpty(book.getAuthors())) {
-      authors = "no authors";
-    } else {
-      authors = book.getAuthors()
-          .stream()
-          .map(Author::getName)
-          .collect(Collectors.joining(", "));
-    }
-
-    String genres;
-    if (CollectionUtils.isEmpty(book.getGenres())) {
-      genres = "no genres";
-    } else {
-      genres = book.getGenres()
-          .stream()
-          .map(Genre::getTitle)
-          .collect(Collectors.joining(", "));
-    }
-
-    return String.format("Book title: %s\nAuthors: %s\nGenres: %s\n----------------\n",
-        book.getTitle(),
-        authors,
-        genres);
   }
 
   /**
    * {@inheritDoc}
    */
+  @Transactional
   @Override
   public String getComments(final long id) {
     final Optional<Book> finedBook = bookRepository.findById(id);
