@@ -1,0 +1,54 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Мастерская ВсеЯСвета - Пользователи</title>
+
+    <link rel="stylesheet" type="text/css" th:href="@{/css/fontawesome/font-awesome.css}" />
+    <link rel="stylesheet" type="text/css" th:href="@{/css/admin.css}" />
+</head>
+<body>
+
+<div class="admin-main">
+    <h2 class="admin-main-title">Пользователи</h2>
+    <!--  Menu  -->
+    <ul class="admin-menu">
+        <li class="admin-menu-item">
+            <span class="fa fa-plus admin-menu-item-ico"></span>
+            <a th:href="@{__${#httpServletRequest.requestURI}__/add}" class="admin-menu-item-link">Добавить автора</a>
+        </li>
+        <li class="admin-menu-item">
+            <span class="fa fa-globe admin-menu-item-ico"></span>
+            <a href="/" class="admin-menu-item-link">На главную</a>
+        </li>
+    </ul>
+    <!--  /Menu  -->
+    <br/>
+
+    <!-- Authors -->
+    <div th:if="${authors.empty}">
+        <h2>Небыло найдено ни одного автора</h2>
+    </div>
+    <table class="user-table" border="1" th:if="${!authors.empty}">
+        <thead>
+            <tr>
+                <th class="user-table-header">#</th>
+                <th class="user-table-header">Имя</th>
+                <th class="user-table-header"></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="author, iterStat : ${authors}" class="user-table-row">
+                <td class="user-table-cell" th:text="${iterStat.index + 1}"></td>
+                <td class="user-table-cell" th:text="${author.getName()}" />
+                <td class="user-table-row-edit">
+                    <a class="fa fa-pencil mobile-edit" th:href="@{__${#httpServletRequest.requestURI}__/edit/{id}(id=${author.getId()})}"></a>
+                    <a class="all-edit" th:href="@{__${#httpServletRequest.requestURI}__/edit/{id}(id=${author.getId()})}">Редактировать</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <!-- Authors -->
+</div>
+
+</body>
+</html>
