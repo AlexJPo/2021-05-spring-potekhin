@@ -22,5 +22,9 @@ public interface AuthorService {
    *
    * @return список авторов
    */
-  List<Author> getAll();
+  List<Author> findAll();
+
+  Author save(String name);
+
+  List<Author> getAuthorByIds(List<Long> authorId);
 }

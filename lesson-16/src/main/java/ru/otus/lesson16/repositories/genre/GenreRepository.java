@@ -22,5 +22,7 @@ public interface GenreRepository {
    *
    * @return список жанров
    */
-  List<Genre> getAll();
+  List<Genre> findAll();
+
+  List<Genre> getAllGenresByIds(List<Long> genreId);
 }

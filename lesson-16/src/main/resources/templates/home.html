@@ -2,26 +2,20 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Книги</title>
-
-    <link rel="stylesheet" type="text/css" th:href="@{/css/fontawesome/font-awesome.css}" />
-    <link rel="stylesheet" type="text/css" th:href="@{/css/admin.css}" />
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}" />
 </head>
 <body>
 
-<div class="admin-main">
-    <h3>Административный раздел</h3>
-    <ul class="admin-menu">
-        <li class="admin-menu-item">
-            <span class="fa fa-users admin-menu-item-ico"></span>
-            <a class="admin-menu-item-link" href="/admin/users">Книги</a>
+<div class="main">
+    <ul class="menu">
+        <li class="menu-item">
+            <a class="menu-item-link" href="/books">Книги</a>
         </li>
-        <li class="admin-menu-item">
-            <span class="fa fa-users admin-menu-item-ico"></span>
-            <a class="admin-menu-item-link" href="/authors">Авторы</a>
+        <li class="menu-item">
+            <a class="menu-item-link" href="/authors">Авторы</a>
         </li>
-        <li class="admin-menu-item">
-            <span class="fa fa-users admin-menu-item-ico"></span>
-            <a class="admin-menu-item-link" href="/admin/users">Жанры</a>
+        <li class="menu-item">
+            <a class="menu-item-link" href="/genres">Жанры</a>
         </li>
     </ul>
 </div>

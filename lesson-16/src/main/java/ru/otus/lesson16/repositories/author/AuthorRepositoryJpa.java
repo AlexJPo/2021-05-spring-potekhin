@@ -1,12 +1,14 @@
 package ru.otus.lesson16.repositories.author;
 
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import ru.otus.lesson16.model.Author;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * @author Aleksey.Potekhin
@@ -34,9 +36,30 @@ public class AuthorRepositoryJpa implements AuthorRepository {
    * {@inheritDoc}
    */
   @Override
-  public List<Author> getAll() {
+  public List<Author> findAll() {
     return entityManager
         .createQuery("select a from Author a", Author.class)
         .getResultList();
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Transactional
+  @Override
+  public Author save(final Author author) {
+    if (author.getId() == 0) {
+      entityManager.persist(author);
+      return author;
+    }
+    return entityManager.merge(author);
+  }
+
+  @Override
+  public List<Author> getAuthorByIds(final List<Long> ids) {
+    return findAll()
+        .stream()
+        .filter(author -> ids.contains(author.getId()))
+        .collect(Collectors.toList());
   }
 }

@@ -29,7 +29,17 @@ public class AuthorServiceImpl implements AuthorService {
    * {@inheritDoc}
    */
   @Override
-  public List<Author> getAll() {
-    return authorRepository.getAll();
+  public List<Author> findAll() {
+    return authorRepository.findAll();
+  }
+
+  @Override
+  public Author save(final String name) {
+    return authorRepository.save(new Author(0, name));
+  }
+
+  @Override
+  public List<Author> getAuthorByIds(final List<Long> authorId) {
+    return authorRepository.getAuthorByIds(authorId);
   }
 }

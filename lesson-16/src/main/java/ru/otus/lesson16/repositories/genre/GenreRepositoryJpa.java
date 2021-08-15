@@ -7,6 +7,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * @author Aleksey.Potekhin
@@ -34,9 +35,16 @@ public class GenreRepositoryJpa implements GenreRepository {
    * {@inheritDoc}
    */
   @Override
-  public List<Genre> getAll() {
+  public List<Genre> findAll() {
     return entityManager
         .createQuery("select g from Genre g", Genre.class)
         .getResultList();
+  }
+
+  @Override
+  public List<Genre> getAllGenresByIds(List<Long> genreId) {
+    return findAll().stream()
+        .filter(genre -> genreId.contains(genre.getId()))
+        .collect(Collectors.toList());
   }
 }

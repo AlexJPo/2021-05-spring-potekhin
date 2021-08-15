@@ -6,7 +6,7 @@
 <body>
 
 <div class="main">
-    <h2 class="main-title">Авторы</h2>
+    <h2 class="main-title">Жанры</h2>
 
     <ul class="menu">
         <li class="menu-item">
@@ -16,10 +16,10 @@
     </ul>
     <br/>
 
-    <div th:if="${authors.empty}">
-        <h2>Не было найдено ни одного автора</h2>
+    <div th:if="${genres.empty}">
+        <h2>Не было найдено ни одного жанра</h2>
     </div>
-    <table class="table" border="1" th:if="${!authors.empty}">
+    <table class="table" border="1" th:if="${!genres.empty}">
         <thead>
             <tr>
                 <th class="table-header">#</th>
@@ -27,9 +27,9 @@
             </tr>
         </thead>
         <tbody>
-            <tr th:each="author, iterStat : ${authors}" class="table-row">
+            <tr th:each="genre, iterStat : ${genres}" class="table-row">
                 <td class="table-cell" th:text="${iterStat.index + 1}"></td>
-                <td class="table-cell" th:text="${author.getName()}" />
+                <td class="table-cell" th:text="${genre.getTitle()}" />
             </tr>
         </tbody>
     </table>

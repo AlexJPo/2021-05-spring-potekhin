@@ -1,5 +1,6 @@
 package ru.otus.lesson16.repositories.author;
 
+import org.springframework.transaction.annotation.Transactional;
 import ru.otus.lesson16.model.Author;
 
 import java.util.List;
@@ -23,5 +24,10 @@ public interface AuthorRepository {
    *
    * @return список авторов
    */
-  List<Author> getAll();
+  List<Author> findAll();
+
+
+  Author save(Author author);
+
+  List<Author> getAuthorByIds(List<Long> ids);
 }

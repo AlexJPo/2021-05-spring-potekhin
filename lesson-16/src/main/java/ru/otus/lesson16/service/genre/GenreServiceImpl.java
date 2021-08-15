@@ -29,7 +29,12 @@ public class GenreServiceImpl implements GenreService {
    * {@inheritDoc}
    */
   @Override
-  public List<Genre> getAll() {
-    return genreRepository.getAll();
+  public List<Genre> findAll() {
+    return genreRepository.findAll();
+  }
+
+  @Override
+  public List<Genre> getAllGenresByIds(List<Long> genreId) {
+    return genreRepository.getAllGenresByIds(genreId);
   }
 }

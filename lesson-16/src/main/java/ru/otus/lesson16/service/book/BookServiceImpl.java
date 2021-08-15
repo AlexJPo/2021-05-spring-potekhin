@@ -3,16 +3,15 @@ package ru.otus.lesson16.service.book;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.CollectionUtils;
-import ru.otus.lesson16.model.Author;
 import ru.otus.lesson16.model.Book;
-import ru.otus.lesson16.model.Genre;
+import ru.otus.lesson16.model.Comment;
 import ru.otus.lesson16.repositories.book.BookRepository;
+import ru.otus.lesson16.service.author.AuthorService;
+import ru.otus.lesson16.service.genre.GenreService;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 /**
  * @author Aleksey.Potekhin
@@ -22,17 +21,15 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class BookServiceImpl implements BookService {
   private final BookRepository bookRepository;
+  private final AuthorService authorService;
+  private final GenreService genreService;
 
   /**
    * {@inheritDoc}
    */
   @Override
-  public String getById(final long id) {
-    final Optional<Book> book = bookRepository.getById(id);
-    if (book.isPresent()) {
-      return mapBook(book.get());
-    }
-    return "Book with id = " + id + " not present";
+  public Book getById(final long id) {
+    return bookRepository.getById(id).get();
   }
 
   /**
@@ -54,10 +51,20 @@ public class BookServiceImpl implements BookService {
    */
   @Transactional
   @Override
-  public String save(final String bookTitle) {
-    Book book = new Book(0L, bookTitle, null, null, null);
+  public void save(final String bookTitle,
+                   final List<Long> authorIds,
+                   final List<Long> genreIds,
+                   final String comment) {
+    final List<Comment> comments = new ArrayList<>();
+    comments.add(new Comment(0, comment));
+
+    final Book book = new Book(0L,
+        bookTitle,
+        comments,
+        authorService.getAuthorByIds(authorIds),
+        genreService.getAllGenresByIds(genreIds)
+    );
     bookRepository.save(book);
-    return "Book '" + bookTitle + "' successful save";
   }
 
   /**
@@ -65,15 +72,27 @@ public class BookServiceImpl implements BookService {
    */
   @Transactional
   @Override
-  public String update(final long id, final String bookTitle) {
+  public void update(final long id,
+                     final String bookTitle,
+                     final List<Long> authorIds,
+                     final List<Long> genreIds,
+                     final String[] bookComments) {
     final Optional<Book> book = bookRepository.getById(id);
     if (book.isPresent()) {
       final Book updatedBook = book.get();
       updatedBook.setTitle(bookTitle);
+      updatedBook.setAuthors(authorService.getAuthorByIds(authorIds));
+      updatedBook.setGenres(genreService.getAllGenresByIds(genreIds));
+
+      final List<Comment> comments = new ArrayList<>();
+      for (int i = 0; i < bookComments.length;) {
+        comments.add(new Comment(Long.parseLong(bookComments[i]), bookComments[i + 1]));
+        i += 2;
+      }
+      updatedBook.setComments(comments);
+
       bookRepository.update(updatedBook);
-      return "Book successful update";
     }
-    return "Book with id = " + id + " not present";
   }
 
   /**
@@ -81,40 +100,8 @@ public class BookServiceImpl implements BookService {
    */
   @Transactional
   @Override
-  public List<String> getAllBooks() {
-    final List<Book> bookList = bookRepository.findAll();
-    final List<String> result = new ArrayList<>();
-    result.add("\n");
-
-    bookList.forEach(book -> result.add(mapBook(book)));
-    return result;
-  }
-
-  private String mapBook(final Book book) {
-    String authors;
-    if (CollectionUtils.isEmpty(book.getAuthors())) {
-      authors = "no authors";
-    } else {
-      authors = book.getAuthors()
-          .stream()
-          .map(Author::getName)
-          .collect(Collectors.joining(", "));
-    }
-
-    String genres;
-    if (CollectionUtils.isEmpty(book.getGenres())) {
-      genres = "no genres";
-    } else {
-      genres = book.getGenres()
-          .stream()
-          .map(Genre::getTitle)
-          .collect(Collectors.joining(", "));
-    }
-
-    return String.format("Book title: %s\nAuthors: %s\nGenres: %s\n----------------\n",
-        book.getTitle(),
-        authors,
-        genres);
+  public List<Book> getAllBooks() {
+    return bookRepository.findAll();
   }
 
 }
