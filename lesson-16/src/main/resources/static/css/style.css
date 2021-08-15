@@ -1,0 +1,4 @@
+.menu { list-style: none; }
+.menu-item { display: inline-block; margin: 0 8px; }
+.table { border-collapse: collapse; width: 90%; }
+.table-cell { padding: 5px; }

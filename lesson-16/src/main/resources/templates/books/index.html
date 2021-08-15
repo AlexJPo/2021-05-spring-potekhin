@@ -1,0 +1,66 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}" />
+</head>
+<body>
+
+<div class="main">
+    <h2 class="main-title">Книги</h2>
+    <!-- Menu -->
+    <ul class="menu">
+        <li class="menu-item">
+            <span class="fa fa-globe menu-item-ico"></span>
+            <a href="/" class="menu-item-link">На главную</a>
+        </li>
+        <li class="menu-item">
+            <span class="fa fa-plus menu-item-ico"></span>
+            <a th:href="@{__${#httpServletRequest.requestURI}__/add}" class="menu-item-link">Добавить книгу</a>
+        </li>
+    </ul>
+    <!-- /Menu -->
+    <br/>
+
+    <!-- Books -->
+    <div th:if="${books.empty}">
+        <h2>Не было найдено ни одной книги</h2>
+    </div>
+    <table class="table" border="1" th:if="${!books.empty}">
+        <thead>
+            <tr>
+                <th class="table-header">#</th>
+                <th class="table-header">Названние</th>
+                <th class="table-header">Автор(ы)</th>
+                <th class="table-header">Жанр(ы)</th>
+                <th class="table-header">Комментарии</th>
+                <th class="table-header"></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="book, iterStat : ${books}" class="table-row">
+                <td class="table-cell" th:text="${iterStat.index + 1}"></td>
+                <td class="table-cell" th:text="${book.getTitle()}" />
+                <td class="table-cell" >
+                    <div th:each="author : ${book.getAuthors()}" th:text="${author.getName()}"></div>
+                </td>
+                <td class="table-cell" >
+                    <div th:each="genre : ${book.getGenres()}" th:text="${genre.getTitle()}"></div>
+                </td>
+                <td class="table-cell" >
+                    <ul>
+                        <li th:each="comment, iterStat : ${book.getComments()}" th:text="${(iterStat.index + 1) + ') ' + comment.getText()}">
+                    </ul>
+                </td>
+                <td class="table-row-edit">
+                    <a class="fa fa-pencil mobile-edit" th:href="@{__${#httpServletRequest.requestURI}__/edit/{id}(id=${book.getId()})}"></a>
+                    <a class="all-edit" th:href="@{__${#httpServletRequest.requestURI}__/edit/{id}(id=${book.getId()})}">Редактировать</a>
+                    <a class="delete" th:href="@{__${#httpServletRequest.requestURI}__/delete/{id}(id=${book.getId()})}">Удалить</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <!-- Books -->
+</div>
+
+</body>
+</html>
