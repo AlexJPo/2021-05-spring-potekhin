@@ -1,0 +1,55 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}" />
+</head>
+<body>
+
+<div class="main">
+  <h2 class="main-title">Добавление книги:</h2>
+  <br/>
+
+  <form th:method="put" th:action="@{__${#httpServletRequest.requestURI}__}">
+    <div class="form-fields-wrap">
+      <div class="text-danger" th:if="${error != ''}" th:text="${error}"></div>
+      <div class="field-wrap">
+        <label>Название:</label>
+        <input type="text" class="login-field" th:name="bookTitle">
+      </div>
+      <br/>
+
+      <div class="field-wrap">
+        <label>Авторы:</label>
+        <select class="role-field" th:name="bookAuthors" multiple="multiple">
+          <option th:each="author : ${authors}"
+                  th:value="${author.getId()}"
+                  th:text="${author.getName()}"></option>
+        </select>
+      </div>
+      <br/>
+
+      <div class="field-wrap">
+        <label>Жанры:</label>
+        <select class="role-field" th:name="bookGenres" multiple="multiple">
+          <option th:each="genre : ${genres}"
+                  th:value="${genre.getId()}"
+                  th:text="${genre.getTitle()}"></option>
+        </select>
+      </div>
+
+      <div class="field-wrap">
+        <label>Комментарий:</label>
+        <input type="text" th:name="bookComment" />
+      </div>
+
+      <br/>
+      <div class="field-wrap">
+        <button type="submit" class="btn-submit">Сохранить</button>
+        <a th:href="${backUrl}" class="btn-cancel">Отмена</a>
+      </div>
+    </div>
+  </form>
+</div>
+
+</body>
+</html>

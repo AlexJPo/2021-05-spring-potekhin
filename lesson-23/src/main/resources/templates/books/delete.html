@@ -1,0 +1,30 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}" />
+</head>
+<body>
+
+<div class="main">
+  <h2 class="main-title">Удаление книги:</h2>
+  <br/>
+
+  <form th:method="delete" th:action="@{__${#httpServletRequest.requestURI}__}">
+    <div class="form-fields-wrap">
+      <div class="text-danger" th:if="${error != ''}" th:text="${error}"></div>
+      <div class="field-wrap">
+        <label>Название:</label>
+        <input type="text" class="login-field" th:value="${book.getTitle()}">
+      </div>
+
+      <br/>
+      <div class="field-wrap">
+        <button type="submit" class="btn-submit">Удалить</button>
+        <a th:href="${backUrl}" class="btn-cancel">Отмена</a>
+      </div>
+    </div>
+  </form>
+</div>
+
+</body>
+</html>

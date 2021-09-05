@@ -1,0 +1,39 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}" />
+</head>
+<body>
+
+<div class="main">
+    <h2 class="main-title">Жанры</h2>
+
+    <ul class="menu">
+        <li class="menu-item">
+            <span class="fa fa-globe menu-item-ico"></span>
+            <a href="/" class="menu-item-link">На главную</a>
+        </li>
+    </ul>
+    <br/>
+
+    <div th:if="${genres.empty}">
+        <h2>Не было найдено ни одного жанра</h2>
+    </div>
+    <table class="table" border="1" th:if="${!genres.empty}">
+        <thead>
+            <tr>
+                <th class="table-header">#</th>
+                <th class="table-header">Имя</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="genre, iterStat : ${genres}" class="table-row">
+                <td class="table-cell" th:text="${iterStat.index + 1}"></td>
+                <td class="table-cell" th:text="${genre.getTitle()}" />
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+</body>
+</html>

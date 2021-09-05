@@ -1,0 +1,39 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}" />
+</head>
+<body>
+
+<div class="main">
+    <h2 class="main-title">Авторы</h2>
+
+    <ul class="menu">
+        <li class="menu-item">
+            <span class="fa fa-globe menu-item-ico"></span>
+            <a href="/" class="menu-item-link">На главную</a>
+        </li>
+    </ul>
+    <br/>
+
+    <div th:if="${authors.empty}">
+        <h2>Не было найдено ни одного автора</h2>
+    </div>
+    <table class="table" border="1" th:if="${!authors.empty}">
+        <thead>
+            <tr>
+                <th class="table-header">#</th>
+                <th class="table-header">Имя</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="author, iterStat : ${authors}" class="table-row">
+                <td class="table-cell" th:text="${iterStat.index + 1}"></td>
+                <td class="table-cell" th:text="${author.getName()}" />
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+</body>
+</html>

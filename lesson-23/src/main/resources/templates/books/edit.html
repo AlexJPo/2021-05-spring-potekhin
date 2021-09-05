@@ -1,0 +1,63 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}" />
+</head>
+<body>
+
+<div class="main">
+    <h2 class="main-title">Редактирование книги:</h2>
+    <br/>
+    <form th:method="post" th:action="@{__${#httpServletRequest.requestURI}__}" th:object="${book}">
+        <div class="form-fields-wrap">
+            <div class="text-danger" th:if="${error != ''}" th:text="${error}"></div>
+            <div class="field-wrap">
+                <label>Название:</label>
+                <input type="text" class="login-field" th:name="bookTitle" th:value="${book.getTitle()}">
+            </div>
+            <br/>
+
+            <div class="field-wrap">
+                <label>Авторы:</label>
+                <select class="role-field" th:name="bookAuthors" multiple="multiple">
+                    <option th:each="author : ${authors}"
+                            th:value="${author.getId()}"
+                            th:text="${author.getName()}"
+                            th:selected="${book.getAuthors().contains(author)}"></option>
+                </select>
+            </div>
+            <br/>
+
+            <div class="field-wrap">
+                <label>Жанры:</label>
+                <select class="role-field" th:name="bookGenres" multiple="multiple">
+                    <option th:each="genre : ${genres}"
+                            th:value="${genre.getId()}"
+                            th:text="${genre.getTitle()}"
+                            th:selected="${book.getGenres().contains(genre)}"></option>
+                </select>
+            </div>
+
+            <div class="field-wrap">
+                <label>Комментарии:</label>
+                <ul>
+                    <li th:each="comment : ${comments}">
+                        <input type="hidden" th:name="bookComments" th:value="${comment.getId()}" />
+                        <input type="text" th:name="bookComments" th:value="${comment.getText()}" />
+                        <br>
+                        <br>
+                    </li>
+                </ul>
+            </div>
+
+            <br/>
+            <div class="field-wrap">
+                <button type="submit" class="btn-submit">Сохранить</button>
+                <a th:href="${backUrl}" class="btn-cancel">Отмена</a>
+            </div>
+        </div>
+    </form>
+</div>
+
+</body>
+</html>
