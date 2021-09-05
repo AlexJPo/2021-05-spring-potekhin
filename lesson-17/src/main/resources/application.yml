@@ -1,12 +1,7 @@
 server:
-  port: 8080
+  #port: 8080
 
 spring:
-  mvc.hiddenmethod.filter.enabled: true
-  thymeleaf:
-    cache: false
-    mode: HTML5
-
   # Data base
   datasource:
     driver-class-name: "com.mysql.cj.jdbc.Driver"

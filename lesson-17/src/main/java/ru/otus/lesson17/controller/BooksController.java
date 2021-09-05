@@ -22,35 +22,35 @@ import java.util.List;
  * @date 11.08.2021
  */
 @RestController
-@RequestMapping("/books")
+@RequestMapping("/book")
 @RequiredArgsConstructor
 public class BooksController {
   private final BookService bookService;
 
-  @GetMapping(value = "/all")
+  @GetMapping(value = "")
   public ResponseEntity<List<Book>> allBooks() {
     return new ResponseEntity<>(bookService.getAllBooks(), HttpStatus.OK);
   }
 
-  @PutMapping(value="/book/add")
+  @PutMapping(value="/add")
   public ResponseEntity<Void> addBook(@RequestBody BookDTO bookDTO) {
     bookService.save(bookDTO);
     return new ResponseEntity("OK", HttpStatus.CREATED);
   }
 
-  @GetMapping(value = "/book/{id}")
+  @GetMapping(value = "/{id}")
   public ResponseEntity<Book> bookById(@PathVariable("id") long id) {
     return new ResponseEntity<>(bookService.getById(id), HttpStatus.OK);
   }
 
-  @PostMapping(value = "/book/{id}")
+  @PostMapping(value = "/{id}")
   public ResponseEntity<Void> editUser(@PathVariable("id") long id,
                                        @RequestBody BookDTO bookDTO) {
     bookService.update(id, bookDTO);
     return new ResponseEntity("OK", HttpStatus.OK);
   }
 
-  @DeleteMapping(value="/delete/{id}")
+  @DeleteMapping(value="/{id}")
   public ResponseEntity<Void> deleteBook(@PathVariable("id") long id) {
     bookService.deleteById(id);
     return new ResponseEntity("OK", HttpStatus.NO_CONTENT);
